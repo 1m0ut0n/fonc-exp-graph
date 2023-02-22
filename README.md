@@ -11,6 +11,6 @@
 - Paul Martineau
 - Elvin Albertos
 - Arthur Bidault
-- Andé-Mathys Flinnois
+- André-Mathys Flinois
 - Yuzhe Zhu
 - Adam Salek
