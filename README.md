@@ -5,3 +5,4 @@
 
 **Groupe ?**
 - Gaspard Beunier
+- Nathan Crincket
