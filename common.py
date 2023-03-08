@@ -66,7 +66,7 @@ class Jeton :
 #### ------ ARBRE ------
 
 ## Definition de l'arbre
-class ArbreL : 
+class ArbreJeton : 
     def __init__(self, jet):
         self.jeton = jet
         self.fils_gauche = None
