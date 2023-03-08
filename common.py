@@ -83,7 +83,7 @@ class ArbreJeton :
     def insert_droit(self, jet):
         # Inserer un jeton à droite
         if self.fils_droit == None:
-            self.fils_gauche = ArbreJeton(jet)
+            self.fils_droit = ArbreJeton(jet)
         else:
             new_node = ArbreJeton(jet)
             new_node.fils_droit = self.fils_droit
