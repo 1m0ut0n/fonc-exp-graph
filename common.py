@@ -8,7 +8,9 @@ from enum import Enum
 class Erreur(Enum) :
     PAS_D_ERREUR = 100
     ERREUR_1 = 101 #... (à ajouter au fur et à mesure)
-
+    ERREUR_301 = 301 # Nombre d'itérations inférieur ou égal à 0
+    ERREUR_302 = 302 # xmin > xmax, erreur d'intervalle
+    ERREUR_303 = 303 # Si nombre d'itérations = 1 et xmin n'est pas égal à xmax
 
 # Enumeration des lexèmes (syntaxe : Lexeme.NOM_LEXEME)
 class Lexeme(Enum) :
