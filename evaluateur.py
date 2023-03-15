@@ -1,126 +1,22 @@
 import math
-from enum import Enum
+import common as c
+import syntax as syn
 
 nomb = eval(input("Entrez votre nombre d'itérations: \n"))
 xmin = eval(input("Entrez votre xmin: \n"))
 xmax = eval(input("Entrez votre xmax: \n"))
 
-# Exemple de creation d'un jeton
-# jet1 = Jeton(Lexeme.PARENTHESE_OUV)
-# jet2 = Jeton(Lexeme.FONCTION, Fonction.ABS)
-# jet3 = Jeton(Lexeme.REEL, 4)
-# jet2 = Jeton(Lexeme.OPERATEUR, Operateur.ADDITION)
+#Arbre de test 1
+jet1 = c.Jeton(c.Lexeme.OPERATEUR, c.Operateur.ADDITION)
+jet2 = c.Jeton(c.Lexeme.OPERATEUR, c.Operateur.DIVISION)
+jet3 = c.Jeton(c.Lexeme.OPERATEUR, c.Operateur.PUISSANCE)
+jet4 = c.Jeton(c.Lexeme.FONCTION, c.Fonction.SQRT)
+jet5 = c.Jeton(c.Lexeme.REEL, 3)
+jet6 = c.Jeton(c.Lexeme.REEL, 4)
+jet7 = c.Jeton(c.Lexeme.REEL, 5)
+jet8 = c.Jeton(c.Lexeme.VARIABLE)
 
-# Exemple de lecture d'un jeton
-# >>> jet1.lexeme == Lexeme.PARENTHESE_OUV
-#  True
-# >>> jet3.valeur
-#  3
-
-# Exemple de creation d'un arbre
-# arbre1 = Arbre(jet1)
-
-# Exemple de remplissage de l'arbre
-# arbre1.insert_gauche(jet2)
-# arbre1.insert_droit(jet3)
-
-# Exemple de récupartion du sous arbre
-# arbre2 = arbre1.fils_gauche
-
-# Exemple de récupartion de la valeur du jeton du fils droit
-# >>> arbre1 = arbre1.fils_droit.jeton.valeur
-#  3
-
-# Enumeration des erreurs (syntaxe : Erreur.NOM_ERREUR)
-class Erreur(Enum) :
-    PAS_D_ERREUR = 100
-    ERREUR_1 = 101 #... (à ajouter au fur et à mesure)
-
-# Enumeration des lexèmes (syntaxe : Lexeme.NOM_LEXEME)
-class Lexeme(Enum) :
-    REEL = 0
-    OPERATEUR = 1
-    FONCTION = 2
-    INCONNU = 3
-    FIN = 4
-    PARENTHESE_OUV = 5
-    PARENTHESE_FERM = 6
-    VARIABLE = 7
-
-# Enumeration des opérateurs (syntaxe : Operateur.NOM_OPERATEUR)
-class Operateur(Enum) :
-    ADDITION = 10
-    SOUSTRACTION = 11
-    MULTIPLICATION = 12
-    DIVISION = 13
-    PUISSANCE = 14
-
-# Enumeration des fonctions (syntaxe : Fonction.NOM_FONCTION)
-class Fonction(Enum) :
-    ABS = 20
-    SIN = 21
-    SQRT = 22
-    LOG = 23
-    COS = 24
-    TAN = 25
-    EXP = 26
-    VALEUR_NEGATIVE = 27
-
-class Jeton :
-    def __init__(self, lex, val = None) :
-        self.lexeme = lex
-        self.valeur = val
-
-# Exemple de creation d'un jeton
-# jet1 = Jeton(Lexeme.PARENTHESE_OUV)
-# jet2 = Jeton(Lexeme.FONCTION, Fonction.ABS)
-# jet3 = Jeton(Lexeme.REEL, 4)
-# jet2 = Jeton(Lexeme.OPERATEUR, Operateur.ADDITION)
-
-# Exemple de lecture d'un jeton
-# >>> jet1.lexeme == Lexeme.PARENTHESE_OUV
-#  True
-# >>> jet3.valeur
-#  3
-
-# Declaration de l'arbre (avec des pointeurs vers les jetons)
-
-#### ------ ARBRE ------
-
-## Definition de l'arbre
-class Arbre: 
-    def __init__(self, jet):
-        self.jeton = jet
-        self.fils_gauche = None
-        self.fils_droit = None
-
-    def insert_gauche(self, jet):
-        if self.fils_gauche == None:
-            self.fils_gauche = Arbre(jet)
-        else:
-            new_node = Arbre(jet)
-            new_node.fils_gauche = self.fils_gauche
-            self.fils_gauche = new_node
-
-    def insert_droit(self, jet):
-        # Inserer un jeton à droite
-        if self.fils_droit == None:
-            self.fils_droit = Arbre(jet)
-        else:
-            new_node = Arbre(jet)
-            new_node.fils_droit = self.fils_droit
-            self.fils_droit = new_node
-
-jet1 = Jeton(Lexeme.OPERATEUR, Operateur.ADDITION)
-jet2 = Jeton(Lexeme.OPERATEUR, Operateur.DIVISION)
-jet3 = Jeton(Lexeme.OPERATEUR, Operateur.PUISSANCE)
-jet4 = Jeton(Lexeme.FONCTION, Fonction.SIN)
-jet5 = Jeton(Lexeme.VARIABLE, val=None)
-jet6 = Jeton(Lexeme.REEL, 4)
-jet7 = Jeton(Lexeme.REEL, 5)
-jet8 = Jeton(Lexeme.VARIABLE, val=None)
-
-arbre1 = Arbre(jet1)
+arbre1 = c.ArbreJeton(jet1)
 arbre1.insert_gauche(jet2)
 arbre1.insert_droit(jet3)
 arbre1.fils_gauche.insert_gauche(jet4)
@@ -128,56 +24,143 @@ arbre1.fils_gauche.insert_droit(jet5)
 arbre1.fils_gauche.fils_gauche.insert_gauche(jet8)
 arbre1.fils_droit.insert_droit(jet7)
 arbre1.fils_droit.insert_gauche(jet6)
+#Fin de l'arbre de test 1
+
+#Arbre de test 2
+jet1 = c.Jeton(c.Lexeme.OPERATEUR, c.Operateur.ADDITION)
+jet2 = c.Jeton(c.Lexeme.OPERATEUR, c.Operateur.DIVISION)
+jet3 = c.Jeton(c.Lexeme.OPERATEUR, c.Operateur.PUISSANCE)
+jet4 = c.Jeton(c.Lexeme.FONCTION, c.Fonction.SQRT)
+jet5 = c.Jeton(c.Lexeme.REEL, 3)
+jet6 = c.Jeton(c.Lexeme.REEL, -1)
+jet7 = c.Jeton(c.Lexeme.VARIABLE)
+jet8 = c.Jeton(c.Lexeme.VARIABLE)
+
+arbre2 = c.ArbreJeton(jet1)
+arbre2.insert_gauche(jet2)
+arbre2.insert_droit(jet3)
+arbre2.fils_gauche.insert_gauche(jet4)
+arbre2.fils_gauche.insert_droit(jet5)
+arbre2.fils_gauche.fils_gauche.insert_gauche(jet8)
+arbre2.fils_droit.insert_droit(jet7)
+arbre2.fils_droit.insert_gauche(jet6)
+#Fin de l'arbre de test 2
+
 
 
 def postorderTraversal(root, x):
     if root is None :
         return ''
     else:
-        if root.jeton.lexeme == Lexeme.REEL:
+        if root.jeton.lexeme == c.Lexeme.REEL:
             return root.jeton.valeur
-        elif root.jeton.lexeme == Lexeme.OPERATEUR:
-            if root.jeton.valeur == Operateur.ADDITION:
-                return postorderTraversal(root.fils_gauche,x) + postorderTraversal(root.fils_droit,x)
-            elif root.jeton.valeur == Operateur.MULTIPLICATION:
-                return postorderTraversal(root.fils_gauche,x) * postorderTraversal(root.fils_droit,x)
-            elif root.jeton.valeur == Operateur.SOUSTRACTION:
-                return postorderTraversal(root.fils_gauche,x) - postorderTraversal(root.fils_droit,x)
-            elif root.jeton.valeur == Operateur.DIVISION:
+        elif root.jeton.lexeme == c.Lexeme.OPERATEUR:
+            if root.jeton.valeur == c.Operateur.ADDITION:
+                fg = postorderTraversal(root.fils_gauche,x)
+                fd = postorderTraversal(root.fils_droit,x)
+                if fg == 'erreurdef':
+                  return 'erreurdef'
+                if fd == 'erreurdef':
+                  return 'erreurdef'
+                return fg + fd
+            elif root.jeton.valeur == c.Operateur.MULTIPLICATION:
+                fg = postorderTraversal(root.fils_gauche,x)
+                fd = postorderTraversal(root.fils_droit,x)
+                if fg == 'erreurdef':
+                  return 'erreurdef'
+                if fd == 'erreurdef':
+                  return 'erreurdef'
+                return fg * fd
+            elif root.jeton.valeur == c.Operateur.SOUSTRACTION:
+                fg = postorderTraversal(root.fils_gauche,x)
+                fd = postorderTraversal(root.fils_droit,x)
+                if fg == 'erreurdef':
+                  return 'erreurdef'
+                if fd == 'erreurdef':
+                  return 'erreurdef'
+                return fg - fd
+            elif root.jeton.valeur == c.Operateur.DIVISION:
+                fg = postorderTraversal(root.fils_gauche,x)
+                fd = postorderTraversal(root.fils_droit,x)
+                if fg == 'erreurdef':
+                  return 'erreurdef'
+                if fd == 'erreurdef':
+                  return 'erreurdef'
+                if root.fils_droit.jeton.lexeme == c.Lexeme.VARIABLE and x == 0 :
+                  x = 10e-300
                 if root.fils_droit.jeton.valeur == 0:
-                  print("Problème : Division par zero!!!")
-                  root.fils_droit.jeton.valeur = root.fils_droit.jeton.valeur + 10e-6
-                return postorderTraversal(root.fils_gauche,x) / postorderTraversal(root.fils_droit,x)
-            elif root.jeton.valeur == Operateur.PUISSANCE:
-                return pow(postorderTraversal(root.fils_gauche,x), postorderTraversal(root.fils_droit,x))
-        elif root.jeton.lexeme == Lexeme.FONCTION:
-            if root.jeton.valeur == Fonction.ABS:
-                return abs(root.fils_gauche.jeton.valeur)
-            elif root.jeton.valeur == Fonction.SIN:
-                return math.sin(root.fils_gauche.jeton.valeur)
-            elif root.jeton.valeur == Fonction.SQRT:
-                return math.sqrt(root.fils_gauche.jeton.valeur)
-            elif root.jeton.valeur == Fonction.COS:
-                return math.cos(root.fils_gauche.jeton.valeur)
-            elif root.jeton.valeur == Fonction.EXP:
-                return math.exp(root.fils_gauche.jeton.valeur)
-        elif root.jeton.lexeme == Lexeme.VARIABLE:
+                  root.fils_droit.jeton.valeur = 10e-300
+                return fg/fd
+            elif root.jeton.valeur == c.Operateur.PUISSANCE:
+                fg = postorderTraversal(root.fils_gauche,x)
+                fd = postorderTraversal(root.fils_droit,x)
+                if fg == 'erreurdef':
+                  return 'erreurdef'
+                if fd == 'erreurdef':
+                  return 'erreurdef'
+                return pow(fg, fd)
+        elif root.jeton.lexeme == c.Lexeme.FONCTION:
+            if root.jeton.valeur == c.Fonction.ABS:
+                fg = postorderTraversal(root.fils_gauche,x)
+                if fg == 'erreurdef':
+                  return 'erreurdef'
+                return abs(fg)
+            elif root.jeton.valeur == c.Fonction.SIN:
+                fg = postorderTraversal(root.fils_gauche,x)
+                if fg == 'erreurdef':
+                  return 'erreurdef'
+                return math.sin(fg)
+            elif root.jeton.valeur == c.Fonction.SQRT:
+                fg = postorderTraversal(root.fils_gauche,x)
+                if fg < 0:
+                  fg = 'erreurdef'
+                if fg == 'erreurdef':
+                  return 'erreurdef'
+                return math.sqrt(fg)
+            elif root.jeton.valeur == c.Fonction.COS:
+                fg = postorderTraversal(root.fils_gauche,x)
+                if fg == 'erreurdef':
+                  return 'erreurdef'
+                return math.cos(fg)
+            elif root.jeton.valeur == c.Fonction.EXP:
+                fg = postorderTraversal(root.fils_gauche,x)
+                if fg == 'erreurdef':
+                  return 'erreurdef'
+                return math.exp(fg)
+        elif root.jeton.lexeme == c.Lexeme.VARIABLE:
             return x
 
 
 #func = postorderTraversal(arbre1, x)
 #print(func)
 
-def evaluateur(nomb, xmin, xmax):
-    res = [[0] * nomb, [0] * nomb]
-    for i in range(nomb):
-        res[0][i] = xmin + i*(xmax-xmin)/nomb
-    for i in range(nomb):
-        if res[0][i] == 0 :
-          res[0][i] == res[0][i] + 10e-6
-    for i in range(nomb):
-        res[1][i] = postorderTraversal(arbre1,res[0][i]) 
-    return res
 
-liste = evaluateur(nomb, xmin, xmax)
-print(liste)
+
+def evaluateur(arbre,nomb, xmin, xmax):
+    if nomb <= 0 :
+      return c.Erreur.ERREUR_301
+    res = [[0] * nomb, [0] * nomb]
+    if xmin > xmax : # Vérification de l'intervalle
+      return c.Erreur.ERREUR_302
+    if nomb == 1 and xmin != xmax: # S'il n'y a qu'une seule itération, on vérifie que xmin=xmax
+      return c.Erreur.ERREUR_303
+    if nomb == 1: # S'il n'y a qu'une seule itération, on retourne le xmin et son image
+      res[0][0] = xmin
+      res[1][0] = postorderTraversal(arbre,xmin)
+      if res[1][0] == 'erreurdef':
+            res[1][0] = None
+      if isinstance(res[1][0], complex):
+            res[1][0] = None
+      return res
+
+      
+
+    for i in range(nomb):
+       res[0][i] = xmin + i*(xmax-xmin)/(nomb-1)
+    for i in range(nomb):
+        res[1][i] = postorderTraversal(arbre,res[0][i])
+        if res[1][i] == 'erreurdef':
+            res[1][i] = None
+        if isinstance(res[1][i], complex):
+            res[1][i] = None
+    return res
