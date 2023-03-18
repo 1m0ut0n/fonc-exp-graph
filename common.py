@@ -18,12 +18,7 @@ from enum import Enum
 
 
 
-#### ------ ENUM ------
-
-# Enumeration des erreurs (syntaxe : Erreur.NOM_ERREUR)
-class Erreur(Enum) :
-    PAS_D_ERREUR = 100
-    ERREUR_1 = 101 #... (à ajouter au fur et à mesure)
+# ------------------------------ Enumerations ------------------------------ #
 
 
 # Enumeration des lexèmes (syntaxe : Lexeme.NOM_LEXEME)
