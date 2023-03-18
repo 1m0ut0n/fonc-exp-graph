@@ -2,3 +2,6 @@
 *
 !*/
 !*.*
+
+# Cache Python
+__pycache__
