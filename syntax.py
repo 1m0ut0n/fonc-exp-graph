@@ -30,16 +30,8 @@ def syntax_analyser(lexem_table):
 
         2)  (ArbreJeton) Arbre binaire construit à partir de la fonction.
     '''
-    # On enregistre la taille du tableau
-    taille = len(lexem_table)
-
-    # Si le tableau est vide, on arrète tout
-    if taille == 0 :
-        return ErreurSyntax.LISTE_VIDE
-
     # On utilise la fonction d'analyse récursive
     erreur, arbre_construit = separation(lexem_table)
-
 
     # Suivant si il y a eu une erreur ou non, on fait une copie de l'arbre construit dans l'arbre en parametre
     if erreur is not ErreurSyntax.PAS_D_ERREUR :
