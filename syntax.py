@@ -59,7 +59,7 @@ def separation(current_table) :
     taille = len(current_table)
 
     # Debug : Visualiser les étapes
-    print("Step : " + str(current_table))
+    # print("Step : " + str(current_table))
 
     # Si la liste est vide, il y a eu un problème
     if taille == 0 :
