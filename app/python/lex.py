@@ -3,10 +3,10 @@ from common import *
 
 
       
-# Debut de la fonction lex 
+# Debut de la fonction lex_analyser 
 # Entrées : chaine de caractère avec espace, la liste de sortie vide 
 # Sorties : nom de l'erreur, la liste de sortie sous forme de lexème
-def lex(chaine_entree_avec_espace, liste_sortie):
+def lex_analyser(chaine_entree_avec_espace, liste_sortie):
 # Suppresion des espaces dans la chaine d'entrées et Création d'une nouvelle chaine d'entree sans l'espace
   chaine_entree = "" #Variable de la nouvelle chaine d'entree sans les espaces 
   i_espace = 0 #Variable d'itération pour la suppression des espaces 
@@ -152,7 +152,7 @@ def lex(chaine_entree_avec_espace, liste_sortie):
      if chaine_entree[i] != ' ':
       return ErreurLex.CARACTERE_NON_RECONNU, liste_sortie
 # Erreur si l'utilisateur ne tape rien 
-     if chaine_entree[i] == ' ':
+     if chaine_entree[0] == ' ':
       return ErreurLex.RIEN_EST_TAPE_PAR_UTILISATEUR, liste_sortie    
 # Incrémentation "générale"           
     i = i + 1     
