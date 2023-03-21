@@ -229,6 +229,10 @@ def postorderTraversal(root, x):
                   return 'fonctionvide'
                 fg = postorderTraversal(root.fils_gauche,x)
                 fd = postorderTraversal(root.fils_droit,x)
+                if isinstance(fg, complex) :
+                  return 'erreurdef'
+                if isinstance(fd, complex) :
+                  return 'erreurdef'
                 # Test qui sert à propager une erreur trouvée dans un des fils :
                 if fg == 'erreurdef':
                   return 'erreurdef'
@@ -302,6 +306,8 @@ def postorderTraversal(root, x):
                 if root.fils_droit is None :
                   return 'fonctionvide'
                 fd = postorderTraversal(root.fils_droit,x)
+                if isinstance(fd, complex) :
+                  return 'erreurdef'
                 if fd <=0 :
                   fd = 'erreurdef'
                 # Test qui sert à propager une erreur trouvée dans un des fils :
