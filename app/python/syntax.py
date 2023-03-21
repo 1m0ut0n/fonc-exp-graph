@@ -70,7 +70,7 @@ def separation(current_table) :
     if current_table[0].lexeme is Lexeme.OPERATEUR or current_table[-1].lexeme is Lexeme.OPERATEUR : # Test operateur au debut ou à la fin
         if current_table[0].valeur is Operateur.SOUSTRACTION : # Exeption '-' au début
             arbre = ArbreJeton(Jeton(Lexeme.OPERATEUR, Operateur.MULTIPLICATION)) # On créer un noeud pour la multiplication par '-1'
-            arbre.fils_gauche = Jeton(Lexeme.REEL, -1) # Noeud '-1'
+            arbre.fils_gauche = ArbreJeton(Jeton(Lexeme.REEL, -1)) # Noeud '-1'
             erreur, arbre.fils_droit = separation(current_table[1:]) # Remplissage de l'arbre à droite
             if erreur is not ErreurSyntax.PAS_D_ERREUR : # Si le remplissage renvoie une erreur, on la transfère
                 return erreur, None
