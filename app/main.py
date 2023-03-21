@@ -30,20 +30,20 @@ def analyse_complete(dico):
     chaine_entree = dico["fonction"]
     couleur = dico["couleur"]
     
-    lexem_table = lex.lex(chaine_entree) #on commence par l'analyse lexicale
-    if type(lexem_table) != list: #s'il y a une erreur, alors on le précise et on la renvoie
-        return {"erreur" : 1, "sortie" : promptErreurLex[lexem_table.lexeme], "couleur" : couleur}
+    lexem_table = lex.lex_analyser(chaine_entree) #on commence par l'analyse lexicale
+    if lexem_table[0] != ErreurLex.PAS_D_ERREUR: #s'il y a une erreur, alors on le précise et on la renvoie
+        return {"erreur" : 1, "sortie" : promptErreurLex[lexem_table[0]], "couleur" : couleur}
     else:
-        syntax_table = syntax.syntax_analyser(lexem_table) #sinon on passe à l'analyse syntaxique
+        syntax_table = syntax.syntax_analyser(lexem_table[1]) #sinon on passe à l'analyse syntaxique
         if syntax_table[0] != ErreurSyntax.PAS_D_ERREUR: #s'il y a une erreur, alors on le précise et on la renvoie
             return {"erreur" : 1, "sortie" : promptErreurSyntax[syntax_table[0]], "couleur" : couleur}
         else:
             arbre = syntax_table[1] #sinon on récupère l'arbre
             result = evaluator.evaluateur(arbre,nomb,xmin,xmax) #et on termine par l'évaluation
-            if type(result) != list: #s'il y a une erreur, alors on le précise et on la renvoie
-                return  {"erreur" : 1, "sortie" : promptErreur[result], "couleur" : couleur}
+            if result[0] != ErreurEval.PAS_D_ERREUR: #s'il y a une erreur, alors on le précise et on la renvoie
+                return  {"erreur" : 1, "sortie" : promptErreurEval[result[0]], "couleur" : couleur}
             else:
-                return {"erreur" : 0, "sortie" : result, "couleur" : couleur}
+                return {"erreur" : 0, "sortie" : result[1], "couleur" : couleur}
                 #si aucune erreur n'est relevée alors on le précise et on renvoie le tableau de données
                 
                 
