@@ -17,20 +17,20 @@ if erreur is not ErreurLex.PAS_D_ERREUR :
 else :
     print(liste_sortie)
 
-# Analyse syntaxique
-print("\n--- Output Syntax ---")
-erreur, arbre_test = syntax_analyser(liste_sortie)
-if erreur is not ErreurSyntax.PAS_D_ERREUR :
-    print("Erreur : " + erreur.name)
-else :
-    print(arbre_test)
-    print("--- Mermaid ---\n" + arbre_to_mermaid(arbre_test))
+    # Analyse syntaxique
+    print("\n--- Output Syntax ---")
+    erreur, arbre_test = syntax_analyser(liste_sortie)
+    if erreur is not ErreurSyntax.PAS_D_ERREUR :
+        print("Erreur : " + erreur.name)
+    else :
+        print(arbre_test)
+        print("--- Mermaid ---\n" + arbre_to_mermaid(arbre_test))
 
-# Evaluation 
-print("\n--- Output Eval ---")
-erreur, liste_val = evaluateur(arbre_test, 20, -10, 10)
-if erreur is not ErreurEval.PAS_D_ERREUR :
-    print("Erreur : " + erreur.name)
-else :
-    print(liste_val[0])
-    print(liste_val[1])
+        # Evaluation 
+        print("\n--- Output Eval ---")
+        erreur, liste_val = evaluateur(arbre_test, 20, -10, 10)
+        if erreur is not ErreurEval.PAS_D_ERREUR :
+            print("Erreur : " + erreur.name)
+        else :
+            print(liste_val[0])
+            print(liste_val[1])
