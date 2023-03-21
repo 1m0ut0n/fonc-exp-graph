@@ -42,7 +42,7 @@ class ErreurSyntax(Enum) :
     LISTE_VIDE = 303
     ERREUR_INCONNUE = 304
     OPERATEUR_SANS_VALEUR_A_COTE = 305
-    FONCTION_SANS_PARETHESE = 306
+    FONCTION_SANS_PARENTHESE = 306
     OBJETS_INCOMPATIBLE = 307
     #... (à ajouter au fur et à mesure)
 
@@ -77,7 +77,7 @@ promptErreurSyntax = {
     ErreurSyntax.LISTE_VIDE : "Veuillez inserer une fonction.",
     ErreurSyntax.ERREUR_INCONNUE : "Une erreur inconnue est survenue, veuillez nous en excusez.",
     ErreurSyntax.OPERATEUR_SANS_VALEUR_A_COTE : "Un operateur ne peut être isolé, il faut une valeur de part et d'autre de ce dernier.",
-    ErreurSyntax.FONCTION_SANS_PARETHESE : "Une fonction ne peut être employée sans parenthèse pour indiquer son paramètre.",
+    ErreurSyntax.FONCTION_SANS_PARENTHESE : "Une fonction ne peut être employée sans parenthèse pour indiquer son paramètre.",
     ErreurSyntax.OBJETS_INCOMPATIBLE : "De objets mathèmatiques situés côte à côte sont imcompatibles entre eux."
 }
 
