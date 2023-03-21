@@ -17,20 +17,12 @@ from enum import Enum
 
 # -------------------------------- Erreurs --------------------------------- #
 
-# Erreurs globales (syntaxe : Erreur.NOM_ERREUR)
-class Erreur(Enum) :
-    PAS_D_ERREUR = 100
-    #... (à ajouter au fur et à mesure)
-
 # Erreurs liées à l'analyseur lexical (syntaxe : ErreurLex.NOM_ERREUR)
 class ErreurLex(Enum):
-    PAS_D_ERREUR = 200
+    PAS_D_ERREUR = 200 
     FONCTION_MAL_ECRITE = 201
     RIEN_EST_TAPE_PAR_UTILISATEUR = 202
     CARACTERE_NON_RECONNU = 203
-    UN_SEUL_CARACTERE_DANS_LA_CHAINE_DIFFERENT_ET_D_UN_ENTIER = 204
-    PREMIER_CARACTERE_NON_ACCEPTE = 205
-    DEUX_OPERATIONS_A_LA_SUITE = 206
     #... (à ajouter au fur et à mesure)
 
 
@@ -58,11 +50,6 @@ class ErreurEval(Enum):
 
 
 # -------------------------------- Prompts --------------------------------- #
-
-# Prompts pour les erreurs globales (syntaxe : promptErreur[Erreur.NOM_ERREUR])
-promptErreur = {
-    Erreur.PAS_D_ERREUR : "Il n'y a aucune erreur."
-}
 
 # Prompts pour les erreurs liées à l'analyseur lexical (syntaxe : promptErreurLex[ErreurLex.NOM_ERREUR])
 promptErreurLex = {
