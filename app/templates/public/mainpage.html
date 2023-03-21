@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>FEUR</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_mainpage.css') }}">
+    <script src="{{ url_for('static', filename='js/script-mainpage.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  </head>
+
+
+
+  <body>
+
+
+    <div id="PrincipalBox">
+
+      <div class="InputFunction">
+        <input type="number" id="xrangemin" placeholder="-10" value="-10">
+        <p>&#60 x &#60 </p>
+        <input type="number" id="xrangemax" placeholder="10" value="10">
+        <input type="number" id="discretisation" placeholder="10" value="10">
+        <input type="text" id="fonction" placeholder="Entrez une fonction" required>
+        <input type="color" id="couleur">
+        <input type="submit" id="submit" value="Afficher" onclick="main();">
+      </div>
+      <canvas id="graphe" height="300" width="500">
+      </canvas>
+      <section>
+      </section>
+
+    </div>
+  </body>
+
+</html>
