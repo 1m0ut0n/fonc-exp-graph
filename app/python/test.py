@@ -11,8 +11,7 @@ if chaine_entree == "" :
 else :
     print("\nFonction : " + chaine_entree)
 print("\n--- Output Lex ---")
-liste_sortie = []
-erreur, liste_sortie = lex_analyser(chaine_entree, liste_sortie)
+erreur, liste_sortie = lex_analyser(chaine_entree)
 if erreur is not ErreurLex.PAS_D_ERREUR :
     print("Erreur : " + erreur.name)
 else :

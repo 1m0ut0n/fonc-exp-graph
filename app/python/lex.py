@@ -6,8 +6,9 @@ from common import *
 # Debut de la fonction lex_analyser 
 # Entrées : chaine de caractère avec espace, la liste de sortie vide 
 # Sorties : nom de l'erreur, la liste de sortie sous forme de lexème
-def lex_analyser(chaine_entree_avec_espace, liste_sortie):
+def lex_analyser(chaine_entree_avec_espace):
 # Suppresion des espaces dans la chaine d'entrées et Création d'une nouvelle chaine d'entree sans l'espace
+  liste_sortie = []
   chaine_entree = "" #Variable de la nouvelle chaine d'entree sans les espaces 
   i_espace = 0 #Variable d'itération pour la suppression des espaces 
   while i_espace < len(chaine_entree_avec_espace):
