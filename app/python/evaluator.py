@@ -242,69 +242,75 @@ def postorderTraversal(root, x):
                 return pow(fg, fd)
         elif root.jeton.lexeme == c.Lexeme.FONCTION:
             if root.jeton.valeur == c.Fonction.ABS:
-                if root.fils_gauche is None :
+                if root.fils_droit is None :
                   return 'fonctionvide'
-                fg = postorderTraversal(root.fils_gauche,x)
+                fd = postorderTraversal(root.fils_droit,x)
                 # Test qui sert à propager une erreur trouvée dans un des fils :
-                if fg == 'erreurdef':
+                if fd == 'erreurdef':
                   return 'erreurdef'
                 #test d'une erreur de syntaxe (fonction vide, ou opérateur isolé) :
-                if fg == 'fonctionvide':
+                if fd == 'fonctionvide':
                   return 'fonctionvide'
-                return abs(fg)
+                return abs(fd)
             elif root.jeton.valeur == c.Fonction.SIN:
-                if root.fils_gauche is None :
+                if root.fils_droit is None :
                   return 'fonctionvide'
-                fg = postorderTraversal(root.fils_gauche,x)
+                fd = postorderTraversal(root.fils_droit,x)
                 # Test qui sert à propager une erreur trouvée dans un des fils :
-                if fg == 'erreurdef':
+                if fd == 'erreurdef':
                   return 'erreurdef'
                 #test d'une erreur de syntaxe (fonction vide, ou opérateur isolé) :
-                if fg == 'fonctionvide':
+                if fd == 'fonctionvide':
                   return 'fonctionvide'
-                return math.sin(fg)
+                return math.sin(fd)
             elif root.jeton.valeur == c.Fonction.SQRT:
-                if root.fils_gauche is None :
+                if root.fils_droit is None :
                   return 'fonctionvide'
-                fg = postorderTraversal(root.fils_gauche,x)
+                fd = postorderTraversal(root.fils_droit,x)
                 # Test qui sert à propager une erreur trouvée dans un des fils :
-                if fg < 0:
-                  fg = 'erreurdef'
-                if fg == 'erreurdef':
+                if fd < 0:
+                  fd = 'erreurdef'
+                if fd == 'erreurdef':
                   return 'erreurdef'
                 #test d'une erreur de syntaxe (fonction vide, ou opérateur isolé) :
-                if fg == 'fonctionvide':
+                if fd == 'fonctionvide':
                   return 'fonctionvide'
-                return math.sqrt(fg)
+                return math.sqrt(fd)
             elif root.jeton.valeur == c.Fonction.COS:
-                fg = postorderTraversal(root.fils_gauche,x)
+                if root.fils_droit is None :
+                  return 'fonctionvide'
+                fd = postorderTraversal(root.fils_droit,x)
                 # Test qui sert à propager une erreur trouvée dans un des fils :
-                if fg == 'erreurdef':
+                if fd == 'erreurdef':
                   return 'erreurdef'
                 #test d'une erreur de syntaxe (fonction vide, ou opérateur isolé) :
-                if fg == 'fonctionvide':
+                if fd == 'fonctionvide':
                   return 'fonctionvide'
-                return math.cos(fg)
+                return math.cos(fd)
             elif root.jeton.valeur == c.Fonction.EXP:
-                fg = postorderTraversal(root.fils_gauche,x)
+                if root.fils_droit is None :
+                  return 'fonctionvide'
+                fd = postorderTraversal(root.fils_droit,x)
                 # Test qui sert à propager une erreur trouvée dans un des fils :
-                if fg == 'erreurdef':
+                if fd == 'erreurdef':
                   return 'erreurdef'
                 #test d'une erreur de syntaxe (fonction vide, ou opérateur isolé) :
-                if fg == 'fonctionvide':
+                if fd == 'fonctionvide':
                   return 'fonctionvide'
-                return math.exp(fg)
+                return math.exp(fd)
             elif root.jeton.valeur == c.Fonction.LOG:
-                fg = postorderTraversal(root.fils_gauche,x)
-                if fg <=0 :
-                  fg = 'erreurdef'
+                if root.fils_droit is None :
+                  return 'fonctionvide'
+                fd = postorderTraversal(root.fils_droit,x)
+                if fd <=0 :
+                  fd = 'erreurdef'
                 # Test qui sert à propager une erreur trouvée dans un des fils :
-                if fg == 'erreurdef':
+                if fd == 'erreurdef':
                   return 'erreurdef'
                 #test d'une erreur de syntaxe (fonction vide, ou opérateur isolé) :
-                if fg == 'fonctionvide':
+                if fd == 'fonctionvide':
                   return 'fonctionvide'
-                return math.log(fg)
+                return math.log(fd)
         elif root.jeton.lexeme == c.Lexeme.VARIABLE:
             return x
 
