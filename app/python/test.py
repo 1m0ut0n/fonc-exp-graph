@@ -10,10 +10,13 @@ if chaine_entree == "" :
     chaine_entree = input("\nFonction : ")
 else :
     print("\nFonction : " + chaine_entree)
-liste_sortie = []
 print("\n--- Output Lex ---")
-liste_sortie = lex_analyser(chaine_entree, liste_sortie)
-print(liste_sortie)
+liste_sortie = []
+erreur, liste_sortie = lex_analyser(chaine_entree, liste_sortie)
+if erreur is not ErreurLex.PAS_D_ERREUR :
+    print("Erreur : " + erreur.name)
+else :
+    print(liste_sortie)
 
 # Analyse syntaxique
 print("\n--- Output Syntax ---")
@@ -26,7 +29,7 @@ else :
 
 # Evaluation 
 print("\n--- Output Eval ---")
-erreur, liste_val = syntax_analyser(liste_sortie)
+erreur, liste_val = evaluateur(arbre_test, 20, -10, 10)
 if erreur is not ErreurEval.PAS_D_ERREUR :
     print("Erreur : " + erreur.name)
 else :
