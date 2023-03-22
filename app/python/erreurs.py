@@ -45,6 +45,7 @@ class ErreurEval(Enum):
     ITERATIONS_INSUFFISANTES = 401 # Nombre d'itérations inférieur à 2
     XMIN_SUPERIEUR_A_XMAX = 402 # xmin > xmax, erreur d'intervalle
     FONCTION_VIDE = 403 # Erreur de syntaxe fonction vide : sqrt( ), sin ( ), 3+5+, 4^, etc.
+    FULL_NONE = 404 # Il n'y a que des None dans la sortie
     #... (à ajouter au fur et à mesure)
 
 
@@ -76,5 +77,6 @@ promptErreurEval = {
     ErreurEval.PAS_D_ERREUR : "Il n'y a aucune erreur.",
     ErreurEval.ITERATIONS_INSUFFISANTES : "Le nombre d'itérations de calcul d'image doit être supérieur ou égal à 2 pour pouvoir discrétiser la fonction.",
     ErreurEval.XMIN_SUPERIEUR_A_XMAX : "La plus petite valeur de x ne peut pas être supérieur à la plus grande.",
-    ErreurEval.FONCTION_VIDE : "Des objets mathématiques sont manquants (fonction vide)."
+    ErreurEval.FONCTION_VIDE : "Des objets mathématiques sont manquants (fonction vide).",
+    ErreurEval.FULL_NONE : "La fonction n'est pas definie sur l'ensemble."
 }

@@ -185,17 +185,15 @@ def postorderTraversal(root, x):
                 if root.fils_droit is None :
                   return 'fonctionvide'
                 fd = postorderTraversal(root.fils_droit,x)
-                if isinstance(fd, complex) : # On vérifie que le fils droit n'est pas complexe
-                  return 'erreurdef'
-                if fd <=0 :
-                  fd = 'erreurdef'
                 # Test qui sert à propager une erreur trouvée dans un des fils :
                 if fd == 'erreurdef':
                   return 'erreurdef'
                 #test d'une erreur de syntaxe (fonction vide, ou opérateur isolé) :
                 if fd == 'fonctionvide':
                   return 'fonctionvide'
-                return math.log(fd)
+                if isinstance(fd, complex) or (isinstance(fd, float) and fd <=0) : # On vérifie que le fils droit n'est pas complexe
+                  return 'erreurdef'
+                return math.log(fd, 10)
         elif root.jeton.lexeme == c.Lexeme.VARIABLE:
             return x
 
@@ -204,7 +202,7 @@ def postorderTraversal(root, x):
 
 def evaluateur(arbre,nomb, xmin, xmax):
     if nomb < 2 :
-      return er.ErreurEval.ITERATIONS_INSUFFISANTES
+      return er.ErreurEval.ITERATIONS_INSUFFISANTES, []
     res = [[0] * nomb, [0] * nomb] # Initialisation du tableau de sortie
     if xmin > xmax : # Vérification de l'intervalle 
       return er.ErreurEval.XMIN_SUPERIEUR_A_XMAX, res
@@ -220,6 +218,12 @@ def evaluateur(arbre,nomb, xmin, xmax):
             res[1][i] = None
         if isinstance(res[1][i], complex): # S'il a une image mais qu'elle est complexe, alors son image est un None.
             res[1][i] = None
+        nb_defini = 0 # On souhaite tester si la fonction est defini sur l'ensemble
+        for i in range(nomb) :
+           if res[1][i] is not None : # On compte les nombre defini
+              nb_defini += 1
+        if nb_none < 2 : # Si y'a moin de deux nombres défini on return une erreur non defini
+           return er.ErreurEval.FULL_NONE, res
     return er.ErreurEval.PAS_D_ERREUR, res # On retourne le code qui dit qu'il n'y a pas d'erreur et on retourne la liste contenant en première ligne les antécédants, et en seconde les images
 
 """"
