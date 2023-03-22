@@ -48,7 +48,7 @@ function test_total() {
     fonction qui va tester si les données entrées sont valides ou non
     */
     if(typeof jQuery != 'function'){ //si l'on n'a pas pu importer la fonction jQuery, c'est qu'il n'y a pas de connexion au réseau
-        window.alert('La connexion au réseau a échoué.');
+        window.alert('Erreur réseau : La connexion au réseau a échoué. Vérifiez votre connexion Internet.');
     } else { //si l'on a pu se connecter
         const xrangemin = document.getElementById("xrangemin"); //on affecte à une constante les champs d'entrées
         const xrangemax = document.getElementById("xrangemax");
@@ -71,7 +71,7 @@ function test_x(xrangemin,xrangemax,element_change) {
     let xmin = Number(xrangemin.value); //on récupère les valeurs des champs
     let xmax = Number(xrangemax.value);
     if ((xrangemin.value == '') || (xrangemax.value == '')) { //si au moins l'un des champs est vide, on affiche une erreur
-        window.alert("Veuillez entrer une valeur pour x.");
+        window.alert("Erreur input : Veuillez entrer une valeur pour x.");
         return false //les valeurs n'ont pas réussi le test
     } else if (xmin >= xmax) { //le x min doit être inférieur au x max
         if (element_change == xrangemin) { //on réinitialise la valeur selon le champ modifié
@@ -79,7 +79,7 @@ function test_x(xrangemin,xrangemax,element_change) {
         } else {
             xrangemax.value = xmin+1;
         }
-        window.alert("x mininimum doit être strictement inférieur à x maximum.");
+        window.alert("Erreur input : x mininimum doit être strictement inférieur à x maximum.");
         return false
     } else {
         return true //s'il n'y a pas d'erreur, les valeurs ont réussi le test
@@ -94,11 +94,11 @@ function test_discretisation(discretisation) {
     output : un booléen si oui ou non la valeur entrée est correcte
     */
     if (discretisation.value == '') { //si le champ est vide, on affiche une erreur
-        window.alert("Veuillez entrer une valeur pour la discrétisation.");
+        window.alert("Erreur input : Veuillez entrer une valeur pour la discrétisation.");
         return false
     } else if (Number(discretisation.value) <= 1) { //il faut que la discrétisation soit au moins égale à 2
         discretisation.value = 2; //si ce n'est pas le cas, on réinitialise la valeur à 2
-        window.alert("La discrétisation sélectionnée doit au moins être égale à 2.");
+        window.alert("Erreur input : La discrétisation sélectionnée doit au moins être égale à 2.");
         return false
     } else {
         return true
@@ -133,7 +133,7 @@ function main() {
             }
         },
         error: function() { //si la requête s'est mal passée, on affiche l'erreur
-            window.alert('La requête a échoué.')
+            window.alert('Erreur serveur : La requête a échoué. Vérifiez que le serveur est lancé.')
         }
     });
 }
@@ -329,8 +329,6 @@ function draw(canva,donnees,couleur) {
     ctx.strokeStyle = "black"; //on définit la couleur des axes d'origine
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.fillText("y",Lx/100,Ly*(4/100)); //on écrit "x" et "y" à côté de l'axe des abscisses et des ordonnées
-    ctx.fillText("x",Lx*(1-2/100),Ly*(1-2/100));
     const longueur_fleche = Lx/100; //on définit la taille des flèches des axes
     const demi_largeur_fleche = Ly/100
     
@@ -341,6 +339,9 @@ function draw(canva,donnees,couleur) {
         ctx.lineTo(Lx-longueur_fleche,d-demi_largeur_fleche); //on affiche une flèche au bout de l'axe
         ctx.moveTo(Lx,d);
         ctx.lineTo(Lx-longueur_fleche,d+demi_largeur_fleche);
+        ctx.fillText("x",Lx*(1-2/100),d*(1-2/100)); //on écrit "x" à côté de l'axe des abscisses
+    } else {
+        ctx.fillText("x",Lx*(1-2/100),Ly*(1-2/100)); //sinon on écrit "x" dans le coin du canva inférieur droit
     }
     
     if (x0 <= 0 && x1 >= 0) { //même principe pour l'axe des ordonnées
@@ -350,6 +351,9 @@ function draw(canva,donnees,couleur) {
         ctx.lineTo(c-demi_largeur_fleche,longueur_fleche);
         ctx.moveTo(c,0);
         ctx.lineTo(c+demi_largeur_fleche,longueur_fleche);
+        ctx.fillText("y",c*(1+1/100),Ly*(4/100)); 
+    } else {
+        ctx.fillText("y",Lx/100,Ly*(4/100)); 
     }
     ctx.stroke();
 }
