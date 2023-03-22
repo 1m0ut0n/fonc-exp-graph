@@ -1,20 +1,51 @@
 # Le Fantastique Expositeur Ultime de Résultat (FEUR)
 
-Intro *(à compléter ...)*
+> **Auteurs :** ALBERTOS Elvin, BEUNIER Gaspard *(Chef de projet)*, BIDAULT Arthur, BRUNEAU Geoffroy, BURET Antoine, CRINCKET Nathan, FLINOIS André-Mathys, MARTINEAU Paul, SALEK Adam et ZHU Yuzhe
 
-Ce compte rendu du travail de groupe rend compte de notre projet de création d'une calculatrice graphique en ligne. Ce projet, réalisé par notre équipe de travail composée de 10 personnes, a pour objectif de fournir un outil pratique et efficace aux utilisateurs qui souhaitent effectuer des calculs mathématiques complexes et visualiser les résultats sous forme graphique. Au cours de notre collaboration, nous avons travaillé ensemble pour concevoir et développer une interface utilisateur conviviale, ainsi que pour intégrer les fonctionnalités de calcul et de tracé graphique dans notre application. Dans ce compte rendu, nous décrirons les différentes étapes de notre processus de travail, les obstacles rencontrés et les solutions que nous avons trouvées pour surmonter ces défis. Enfin, nous ferons un bilan de notre travail et évaluerons les résultats obtenus en termes de fonctionnalités, de performance et de convivialité de l'application.
+Le **Fantastique Expositeur Ultime de Résultat (FEUR)** est projet ayant pour but de recréer une calculatrice graphique. Ce projet, réalisé dans le contexte du module électif *"Techniques de programmation avancées"*, a été entièrement réalisé par notre super équipe de 10.
 
-> Noms
+Pour notre calculatrice graphique, nous avons créer un véritable site web, hébergé en local avec un serveur Python qui s'occupe de réaliser tout les analyses et les calculs nécessaires. Grâce à un ingénieux système, les fonction peuvent être entrées directement sur le site, elle feront l'objet d'une requête serveur qui répondra avec la discrétisation de la fonction. Le site affichera alors dynamiquement la fonction. On peut donner comme exemple la fonction :
+$$
+\exp ( \cos ( x ) )
+$$
+![Screenshot de l'affichage du site web pour la fonction exp(cos(x))](https://cdn.discordapp.com/attachments/399186517890957323/1088119519408558100/image.png)
 
 
 
 ## Mise en place
 
-*FEUR* fonctionne grâce à une serveur python hébergé en local sur votre ordinateur grâce au framework *Flask*. C'est pourquoi, afin de tester notre *Fantastique Expositeur Ultime de Résultat*...
+**FEUR** fonctionne grâce à un serveur Python hébergé en local sur votre ordinateur grâce au framework *Flask*. C'est pourquoi, afin de tester notre **Fantastique Expositeur Ultime de Résultat**, il faut d'abord mettre en place le serveur :
+
+#### Installation
+Dans la section *"Releases"* de *GitHub*, téléchargez le fichier `feur-v1.zip` puis extrayez le sur un emplacement de votre ordinateur.
+Vous pouvez aussi utiliser *git* pour télécharger le projet en entrant la commande suivante dans votre terminal :
+```bash
+> git clone https://github.com/1m0ut0n/fonc-exp-graph.git
+```
+
+#### Dépendances
+Pour fonctionner, le projet utilise *Flask*, un framework de développement web en Python. C'est pourquoi pour utiliser **FEUR**, il est nécessaire d'avoir un environnement Python avec *pip*, que vous pouvez simplement installer en utilisant *[Miniconda](https://docs.conda.io/en/latest/miniconda.html#)* par exemple.
+
+**⚠️ Il est requis de disposer au moins de Python 3.10.0 pour que le projet puisse fonctionner correctement !**
+
+Lorsque que vous disposer des outils nécessaires, ouvrez un invité de commande dans le dossier `feur-v1`. Vous pourrez alors installer simplement les bibliothèques Python nécessaires au projet grâce à la liste `requirements.txt` en utilisant la commande :
+```bash
+> pip install -r requirements.txt
+```
+Si vous préférez, vous pouvez installer *Flask* indépendamment puisque c'est la seul bibliothèque dont nous avons le besoin :
+```bash
+> pip install Flask
+```
+
+#### Utilisation
+Tout est maintenant prêt pour que vous puissiez utiliser **FEUR** ! Toujours dans le dossier `feur-v1` entrez la commande :
+```bash
+> python run.py
+```
+Vous verrez alors le serveur démarrer. Une fois le démarrage terminé, **assurez vous d'être connecter à Internet** et entrez l'adresse `http://127.0.0.1:5000` dans votre navigateur préféré ! Vous pourrez alors afficher les fonctions que vous souhaitez !  :)
 
 
-
-## Comment ça marche
+## Comment ça marche ?
 
 Intro *(à compléter ...)*
 
@@ -34,7 +65,7 @@ Explication  *(à compléter ...)*
 ### Evaluateur
 > Par *ZHU Yuzhe* et *FLINOIS André-Mathys*
 
-La partie évaluateur est la troisième partie du programme. Elle vient après l’analyse lexicale et l’analyse syntaxique. Elle reçoit en entrée un arbre postfixé de jetons, ainsi que les paramètres entrés sur le site web *(nombre d’itérations et intervalle de $x$)*. Le défi de cette partie est d’utiliser cet arbre comme une fonction par laquelle une liste d’antécédents passe. La fonction `evaluateur`  en elle-même consiste simplement à effectuer quelques tests sur la cohérence des paramètres entrés, puis à créer une liste pour la remplir d’un échantillonnage de valeurs, accompagnées de leur image.
+La partie évaluateur est la troisième partie du programme. Elle vient après l’analyse lexicale et l’analyse syntaxique. Elle reçoit en entrée un arbre postfixé de jetons, ainsi que les paramètres entrés sur le site web *(nombre d’itérations et intervalle de *$x$*)*. Le défi de cette partie est d’utiliser cet arbre comme une fonction par laquelle une liste d’antécédents passe. La fonction `evaluateur`  en elle-même consiste simplement à effectuer quelques tests sur la cohérence des paramètres entrés, puis à créer une liste pour la remplir d’un échantillonnage de valeurs, accompagnées de leur image.
 
 Parmi les tests effectués sur les paramètres, on retrouve la vérification du nombre d’itérations. En effet, pour afficher l’allure d’une fonction, quelle qu’en soit la précision, il faut au minimum 2 points calculés. Si cette exigence n’est pas respectée, une erreur est retournée. L’intervalle entré par l’utilisateur doit être croissant, c’est-à-dire que la valeur minimale des $x$ doit être inférieure à la valeur maximale des $x$.
 
@@ -66,8 +97,24 @@ Explication  *(à compléter ...)*
 ### Page Web (Frontend)
 > Par *SALEK Adam* et *MARTINEAU Paul*
 
-Explication  *(à compléter ...)*
+La page web est la dernière étape du projet de calculatrice graphique. C'est sur cette dernière que se situe toute l'interface utilisateur. Sur cette page, l'utilisateur peut entrer la fonction, ajuster des caractéristiques sur son affichage et print cette fonction sur le canvas central de la page.
 
+Tout d'abord, on arrive sur la page *`accueil.html`* qui nous introduit au site **FEUR**  *(Fantastique Expositeur Ultime de Résultat)*. En cliquant sur le bouton central on est redirigé vers la page principale du site, détaillée ci-dessous.
+
+La page *`mainpage.html`* est construite de la manière suivante:
+- Le **logo** du site en haut à gauche ;
+- Le lien vers notre **rapport** de projet ;
+- Un `<canvas>` central dans lequel va prendre place le graphique tracé en JavaScript - Différents `<input>` :
+  - Abscisse **min** et **max** de x, `<input type="number">` ;
+  - **Discrétisation**  *(nombre de points à afficher)*, `<input type="number">` ;
+  - **Couleur** de la courbe, `<input type="color">` ; 
+  - La **fonction**, `<input type="text">` ; 
+  - Le **bouton** afficher, `<input type="submit">` ;
+
+Ce squelette HTML est supporté par le fichier **CSS**  `style_mainpage.css` dans lequel on met en forme les éléments issus du HTML à l'aide des balises `div` qui contiennent des **id** et des **class**. Cette page HTML est aussi reliée au fichier **JavaScript**  `script-mainpage.js`.
+
+### Mise en commun
+> Par *BURET Antoine* et *BEUNIER Gaspard*
 
 
 ## Tests
