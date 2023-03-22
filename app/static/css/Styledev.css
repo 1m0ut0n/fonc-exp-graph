@@ -1,0 +1,94 @@
+body, html {
+
+    margin:0px;
+    font-family: 'Orbitron', sans-serif;
+    width: 90vw;
+}
+
+    
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: all 1s;
+}
+.geoffroy{
+
+    transition: all 3s ;
+}
+.geoffroy:hover{ transform: rotate(10turn);
+    filter: sepia(90%);
+    filter: saturate(7);
+
+
+}
+body {
+    background: rgb(27,27,27);
+
+}
+
+h1 {
+    margin:0px;
+    font-size: 100px;
+    margin: auto;
+    color: #F54703;
+    left: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  
+    transition: all 1s;
+    
+}
+
+h1:hover{color: white;transform: scale(1.1);}
+h2:hover{color: white;}
+img:hover{transform: scale(0.9);
+transform: rotate(360);}
+
+
+.antoine:hover{
+    transform: scale(1.2);
+}
+
+div{
+    margin:0px;
+    position: relative;
+    top: 5vh;
+
+}
+
+dev {
+    margin:0px;
+    position: relative;
+top: 10vh;
+padding: 10vh;
+margin-top: 10vh;
+margin-bottom: 10vh;
+
+}
+
+
+
+h2{
+    margin:0px;
+    font-size: 80px;
+    margin: auto;
+    color: #F54703;
+    left: 10px;
+
+    text-align: center;
+    transition: all 0.6s;
+
+}
+
+
+p {
+    margin:0px;
+    font-size: 30px;
+color: white;
+padding-bottom: 8vh;
+text-align: center;
+}
+

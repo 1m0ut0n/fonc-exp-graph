@@ -23,6 +23,10 @@ import json
 @app.route('/') #'/' correspond à l'url de la page d'accueil
 def index():
     return render_template('public/accueil.html') #on exécute alors une fonction qui permet d'afficher la page
+    
+@app.route('/developpeurs') #'/developpeurs' correspond à l'url de la page des développeurs
+def dev():
+    return render_template('public/Nosdev.html') #on exécute alors une fonction qui permet d'afficher la page
 
 @app.route('/mainpage') #'/mainpage' correspond à l'url par défaut de la page de calcul
 def mainpage():
