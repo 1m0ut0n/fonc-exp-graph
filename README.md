@@ -1,15 +1,18 @@
-# Le Fantastique Expositeur Ultime de Résultat (FEUR)
+﻿# Le Fantastique Expositeur Ultime de Résultat (FEUR)
+
+<!-- Essayer d'ajouter de la mise en forme pour avoir moins de paragraphes -->
 
 > **Auteurs :** ALBERTOS Elvin, BEUNIER Gaspard *(Chef de projet)*, BIDAULT Arthur, BRUNEAU Geoffroy, BURET Antoine, CRINCKET Nathan, FLINOIS André-Mathys, MARTINEAU Paul, SALEK Adam et ZHU Yuzhe
 
 Le **Fantastique Expositeur Ultime de Résultat (FEUR)** est projet ayant pour but de recréer une calculatrice graphique. Ce projet, réalisé dans le contexte du module électif *"Techniques de programmation avancées"*, a été entièrement réalisé par notre super équipe de 10.
 
 Pour notre calculatrice graphique, nous avons créer un véritable site web, hébergé en local avec un serveur Python qui s'occupe de réaliser tout les analyses et les calculs nécessaires. Grâce à un ingénieux système, les fonction peuvent être entrées directement sur le site, elle feront l'objet d'une requête serveur qui répondra avec la discrétisation de la fonction. Le site affichera alors dynamiquement la fonction. On peut donner comme exemple la fonction :
+
 $$
 \exp ( \cos ( x ) )
 $$
-![Screenshot de l'affichage du site web pour la fonction exp(cos(x))](https://cdn.discordapp.com/attachments/399186517890957323/1088119519408558100/image.png)
 
+![Screenshot de l'affichage du site web pour la fonction exp(cos(x))](https://cdn.discordapp.com/attachments/399186517890957323/1088119519408558100/image.png)
 
 
 ## Mise en place
@@ -17,7 +20,7 @@ $$
 **FEUR** fonctionne grâce à un serveur Python hébergé en local sur votre ordinateur grâce au framework *Flask*. C'est pourquoi, afin de tester notre **Fantastique Expositeur Ultime de Résultat**, il faut d'abord mettre en place le serveur :
 
 #### Installation
-Dans la section *"Releases"* de *GitHub*, téléchargez le fichier `feur-v1.zip` puis extrayez le sur un emplacement de votre ordinateur.
+Dans la section *"Releases"* du [GitHub du projet](https://github.com/1m0ut0n/fonc-exp-graph), téléchargez le fichier `feur-v1.zip` puis extrayez le sur un emplacement de votre ordinateur.
 Vous pouvez aussi utiliser *git* pour télécharger le projet en entrant la commande suivante dans votre terminal :
 ```bash
 > git clone https://github.com/1m0ut0n/fonc-exp-graph.git
@@ -42,12 +45,49 @@ Tout est maintenant prêt pour que vous puissiez utiliser **FEUR** ! Toujours da
 ```bash
 > python run.py
 ```
-Vous verrez alors le serveur démarrer. Une fois le démarrage terminé, **assurez vous d'être connecter à Internet** et entrez l'adresse `http://127.0.0.1:5000` dans votre navigateur préféré ! Vous pourrez alors afficher les fonctions que vous souhaitez !  :)
+Vous verrez alors le serveur démarrer. Une fois le démarrage terminé, **assurez vous d'être connecter à Internet** et entrez l'adresse [`http://127.0.0.1:5000`](http://127.0.0.1:5000) dans votre navigateur préféré ! Vous pourrez alors afficher les fonctions que vous souhaitez !  :)
 
 
 ## Comment ça marche ?
 
-Intro *(à compléter ...)*
+Comme expliqué plus tôt, le principe de **FEUR** est de pouvoir créer l'interface utilisateur avec une page web et de gérer les analyse et les calculs avec du Python. Si nous avions décider de faire comme ça, c'est principalement pour deux raisons : certains d'entre nous avaient déjà eu de mauvaises expériences avec *OpenGL* plus tôt et nous étions un groupe un peu plus grand que les autres. Ceci nous permettait de pousser le projet encore plus loin et, il faut l'avouer, nous amusait aussi un peu plus.
+
+Ainsi, nous voulions dès le début construire notre projet autour d'un serveur web hébergé en local, mais de base, nous voulions tout de même coder en C en utilisant un framework similaire à Flask mais pour du C. Mais après 2 après-midi de recherche de test, tout les framework testés en C ou C++ était soi trop complexe à utiliser, soi trop complexe à mettre en place. C'est alors que nous nous est venu l'idée d'utiliser Flask, que certains avaient déjà utilisés avant. Mais pour passer sur Flask, il fallait traduire tout le travail déjà fait en C sur les analyseurs en Python, la décision n'a donc pas été prise à la légère. Cependant, les avantages de Flask et la facilité d'installation étaient tellement pratique que ce soit pour nous ou pour vous tester plus tard que nous avons décider de tout refaire !
+
+Le **principe de fonctionnement** de la calculatrice est assez simple :
+1. **L'utilisateur** entre une *fonction* ou modifie les paramètre d'affichage.
+2. **Le programme JavaScript** de la page réalise une *requête au serveur* avec la fonction et les paramètre.
+3. **Le serveur** récupère la *fonction littérale* et les paramètre, puis commence l'analyse en commençant **l'analyse lexicale**.
+4. **L'analyse lexicale** "lit" *l'expression littérale* pour la transformer en une *liste de lexèmes*.
+5. Si il n'y a pas d'*erreur*, **le serveur** passe alors à **l'analyse syntaxique**.
+6. **L'analyse lexicale** utilise les règles mathématique pour trier les lexème dans un *arbre* suivant leur ordre d'interprétation.
+7. En l'absence d'*erreur*, **le serveur** conclut par **l'évaluation**.
+8. **L'évaluateur** va interpréter *l'arbre de lexème* pour calculer une *liste l'image de la fonction*.
+9. Si pendant les analyses ou calculs, une *erreur* est survenue, **le serveur** répondra à la requête avec cette dernière. Sinon, il fera passer le *tableau d'image*.
+10. **Le programme JavaScript** pourra alors réaliser l'*affichage de la fonction*, ou, à default, afficher l'*erreur* survenue.
+11. **L'utilisateur** est alors prêt a afficher une autre *fonction*.
+
+```mermaid
+flowchart  LR;
+	user([Utilisateur])
+	js([JavaScript])
+	serveur([Programme central])
+	lex([Analyse lexicale])
+	syntax([Analyse syntaxique])
+	eval([Evaluation])
+	subgraph  python  [Serveur Python]
+		serveur  -- Fonction littérale -->  lex
+		lex  -- Liste de lexèmes -->  syntax
+		syntax  -- Arbre de lexèmes -->  eval
+		eval  -- Liste d'images de la fonction -->  serveur
+	end
+	js  -- Envoi d'une requête serveur -->  serveur
+	serveur  -- Réponse -->  js
+	subgraph  page  [Page Web]
+		js  -- Affichage de la courbe -->  user
+		user  -- Entrée d'une fonction -->  js
+	end
+```
 
 
 ### Analyse Lexicale
