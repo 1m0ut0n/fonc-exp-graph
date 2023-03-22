@@ -1,3 +1,6 @@
+//par Arthur, Adam, Antoine
+
+
 //--------------------------------------------------------------------------------------------------------------------
 //
 //                            Ci-dessous la partie récupération des données et requêtes
@@ -252,34 +255,42 @@ function draw(canva,donnees,couleur) {
     
     ctx.strokeStyle = couleur; //on définit la couleur du tracé de la courbe
     ctx.lineWidth = 2; //on définit la largeur du tracé de la courbe
+    ctx.font = "125% serif"; //on définit la police d'écriture des valeurs
     ctx.beginPath(); //on commence à dessiner
     ctx.clearRect(0,0,Lx,Ly); //on efface tout ce qu'il y a dans le canva
     
     //cette partie va permettre de tracer la courbe de la fonction entrée
-    var prochain = [donnees[0][0],donnees[1][0]]; //on initialise le prochain point comme le premier point
-    let index = 1; //on définit l'indexation de l'élément dans la liste
-    while (prochain[1] == null && index < L) { //tant que l'ordonnée de l'élément est nul, on choisit le prochain élément
-        prochain = [donnees[0][index],donnees[1][index]];
-        index += 1;
-    }
-    if (prochain[1] != null) { //on vérifie que l'ordonnée existe bien (pour les discontinuités de fonction)
-        ctx.moveTo(fx(x0,prochain[0],dist_abs,Lx),fy(b,prochain[1],dist_ord,Ly)); //on se déplace au premier point
-        for (var i = index;i < L;i++) { //on parcourt tous les points du tableau donné
-            prochain = [donnees[0][i],donnees[1][i]]; //on définit le prochain point
-            if (prochain[1] != null) { //si l'ordonnée n'est pas nulle on trace un segment
-                ctx.lineTo(fx(x0,prochain[0],dist_abs,Lx),fy(b,prochain[1],dist_ord,Ly)); //on trace une ligne jusqu'au prochain point
-            } else { //sinon on se déplace au prochain point existant sans dessiner
-                while (prochain[1] == null && i < L) {
-                    i += 1;
-                    prochain = [donnees[0][i],donnees[1][i]];
-                }
-                if (prochain[1] != null) {
-                    ctx.moveTo(fx(x0,prochain[0],dist_abs,Lx),fy(b,prochain[1],dist_ord,Ly));
+    if (a == b) { //si la fonction est constante on affiche simplement une droite
+        ctx.moveTo(0,Ly/2);
+        ctx.lineTo(Lx,Ly/2);
+        ctx.fillText(a.toString(),Lx/100,Ly*(1/2+4/100));
+    } else {
+        var prochain = [donnees[0][0],donnees[1][0]]; //on initialise le prochain point comme le premier point
+        let index = 1; //on définit l'indexation de l'élément dans la liste
+        while (prochain[1] == null && index < L) { //tant que l'ordonnée de l'élément est nul, on choisit le prochain élément
+            prochain = [donnees[0][index],donnees[1][index]];
+            index += 1;
+        }
+        if (prochain[1] != null) { //on vérifie que l'ordonnée existe bien (pour les discontinuités de fonction)
+            ctx.moveTo(fx(x0,prochain[0],dist_abs,Lx),fy(b,prochain[1],dist_ord,Ly)); //on se déplace au premier point
+            for (var i = index;i < L;i++) { //on parcourt tous les points du tableau donné
+                prochain = [donnees[0][i],donnees[1][i]]; //on définit le prochain point
+                if (prochain[1] != null) { //si l'ordonnée n'est pas nulle on trace un segment
+                    ctx.lineTo(fx(x0,prochain[0],dist_abs,Lx),fy(b,prochain[1],dist_ord,Ly)); //on trace une ligne jusqu'au prochain point
+                } else { //sinon on se déplace au prochain point existant sans dessiner
+                    while (prochain[1] == null && i < L) {
+                        i += 1;
+                        prochain = [donnees[0][i],donnees[1][i]];
+                    }
+                    if (prochain[1] != null) {
+                        ctx.moveTo(fx(x0,prochain[0],dist_abs,Lx),fy(b,prochain[1],dist_ord,Ly));
+                    }
                 }
             }
         }
     }
     ctx.stroke(); //on arrête de dessiner
+    
     const puissancex = trouver_puissance(dist_abs); //on va chercher la puissance de 10 utilisée pour l'affichage en abscisse et en ordonnée
     const puissancey = trouver_puissance(dist_ord);
     const dixpuissancex = Math.pow(10,puissancex); //on définit les valeurs de 10^puissance
@@ -298,13 +309,13 @@ function draw(canva,donnees,couleur) {
         let abscisse = fx(x0,valuex,dist_abs,Lx); //on convertit cette abscisse en pixels
         let abscisse_val = abscisse+Lx/100; //on définit l'abscisse de la valeur
         let ordonnee_val = Ly*(1-2/100); //on définit l'ordonnée de la valeur
-        let valeur_sans_puissance = Math.round(valuex/dixpuissancex); //on assigne à une variable la valeur du nombre sans sa puissance de 10
+        let valeur_sans_puissancex = Math.round(valuex/dixpuissancex); //on assigne à une variable la valeur du nombre sans sa puissance de 10
         ctx.moveTo(abscisse,0);
         ctx.lineTo(abscisse,Ly); //on trace donc cet axe
-        if ((puissancex <= -3) || (puissancex >= 3)) { //si la puissance est trop élevée ou trop faible, on va afficher les valeurs au format : 'xepuissance' pour 'x*10^puissance'
-            ctx.fillText(valeur_sans_puissance.toString()+"e"+puissancex.toString(),abscisse_val,ordonnee_val);
+        if ((puissancex <= -3) || (puissancex >= 3) && (valeur_sans_puissancex != 0)) { //si la puissance est trop élevée ou trop faible, on va afficher les valeurs au format : 'xepuissance' pour 'x*10^puissance'
+            ctx.fillText(valeur_sans_puissancex.toString()+"e"+puissancex.toString(),abscisse_val,ordonnee_val);
         } else { //sinon on affiche simplement la valeur (ici problème d'arrondi pour certaines valeurs venant de la précision de la fonction Math.pow())
-            ctx.fillText((valeur_sans_puissance*dixpuissancex).toString(),abscisse_val,ordonnee_val);
+            ctx.fillText((valeur_sans_puissancex*dixpuissancex).toString(),abscisse_val,ordonnee_val);
         }
     }
     
@@ -313,13 +324,13 @@ function draw(canva,donnees,couleur) {
         let ordonnee = fy(b,valuey,dist_ord,Ly);
         let abscisse_val = Lx/100;
         let ordonnee_val = ordonnee+4*Ly/100;
-        let valeur_sans_puissance = Math.round(valuey/dixpuissancey);
+        let valeur_sans_puissancey = Math.round(valuey/dixpuissancey);
         ctx.moveTo(0,ordonnee);
         ctx.lineTo(Lx,ordonnee);
-        if ((puissancey <= -3) || (puissancey >= 3)) {
-            ctx.fillText(valeur_sans_puissance.toString()+"e"+puissancey.toString(),abscisse_val,ordonnee_val);
+        if ((puissancey <= -3) || (puissancey >= 3) && (valeur_sans_puissancey != 0)) {
+            ctx.fillText(valeur_sans_puissancey.toString()+"e"+puissancey.toString(),abscisse_val,ordonnee_val);
         } else {
-            ctx.fillText((valeur_sans_puissance*dixpuissancey).toString(),abscisse_val,ordonnee_val);
+            ctx.fillText((valeur_sans_puissancey*dixpuissancey).toString(),abscisse_val,ordonnee_val);
         }
     }
     ctx.stroke();
