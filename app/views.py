@@ -12,7 +12,6 @@ import json
 
 #on importe la bibliothèque json qui permet d'utiliser des données structurées de façon semblable aux objets Javascript 
 
-
 #---------------------------------------------------------------------------------------------------------------------
 #
 #                  Ci-dessous, nous allons assigner une fonction précise à chaque url que l'on va créer
@@ -26,11 +25,15 @@ def index():
     
 @app.route('/developpeurs') #'/developpeurs' correspond à l'url de la page des développeurs
 def dev():
-    return render_template('public/Nosdev.html') #on exécute alors une fonction qui permet d'afficher la page
+    return render_template('public/Nosdev.html')
 
 @app.route('/mainpage') #'/mainpage' correspond à l'url par défaut de la page de calcul
 def mainpage():
-    return render_template('public/mainpage.html') #on exécute alors une fonction qui permet d'afficher la page
+    return render_template('public/mainpage.html')
+
+@app.route('/mainpage/rapport') #'/mainpage/rapport' correspond à l'url de la page du rapport
+def rapport():
+    return render_template('public/rapport.html')
     
 @app.route('/mainpage/calculate', methods=['POST']) # lorsque l'url est '/mainpage/calculate', on veut poster des données sur le serveur, on exécute la fonction suivante
 def calculate():
