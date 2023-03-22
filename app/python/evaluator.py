@@ -144,16 +144,16 @@ def postorderTraversal(root, x):
                 if root.fils_droit is None :
                   return 'fonctionvide'
                 fd = postorderTraversal(root.fils_droit,x)
-                if isinstance(fd, complex) : # On vérifie que le fils droit n'est pas complexe
-                  return 'erreurdef'
-                # Test qui sert à propager une erreur trouvée dans un des fils :
-                if fd < 0:
-                  fd = 'erreurdef'
                 if fd == 'erreurdef':
                   return 'erreurdef'
                 #test d'une erreur de syntaxe (fonction vide, ou opérateur isolé) :
                 if fd == 'fonctionvide':
                   return 'fonctionvide'
+                if isinstance(fd, complex) : # On vérifie que le fils droit n'est pas complexe
+                  return 'erreurdef'
+                # Test qui sert à propager une erreur trouvée dans un des fils :
+                if fd < 0:
+                  return 'erreurdef'
                 return math.sqrt(fd)
             elif root.jeton.valeur == c.Fonction.COS:
                 if root.fils_droit is None :
@@ -191,7 +191,7 @@ def postorderTraversal(root, x):
                 #test d'une erreur de syntaxe (fonction vide, ou opérateur isolé) :
                 if fd == 'fonctionvide':
                   return 'fonctionvide'
-                if isinstance(fd, complex) or (isinstance(fd, float) and fd <=0) : # On vérifie que le fils droit n'est pas complexe
+                if isinstance(fd, complex) or (isinstance(fd, float) and fd <=0) : # On vérifie que le fils droit n'est pas complexe, ou que si c'est un réel, il n'est pas inférieur ou égal à 0 (domaine de définition du log)
                   return 'erreurdef'
                 return math.log(fd, 10)
         elif root.jeton.lexeme == c.Lexeme.VARIABLE:
@@ -210,7 +210,7 @@ def evaluateur(arbre,nomb, xmin, xmax):
     for i in range(nomb):
        res[0][i] = xmin + i*(xmax-xmin)/(nomb-1) # On génère la liste des x en fonction des valeurs rentrées (nombre d'itérations, xmin et xmax)
     for i in range(nomb):
-        res[1][i] = postorderTraversal(arbre,res[0][i]) # Pour chaque calcul d'image de x dans la première ligne de la liste, on fait appel à la fonction postorderTraversal, et on stocke la valeur dans la dexuième ligne, à la même colonne que l'antécédent.
+        res[1][i] = postorderTraversal(arbre,res[0][i]) # Pour chaque calcul d'image de x dans la première ligne de la liste, on fait appel à la fonction postorderTraversal, et on stocke la valeur dans la deuxième ligne, à la même colonne que l'antécédent.
         if res[1][i] == 'fonctionvide': # Si l'erreur de fonction vide s'est propagée, on retourne le code d'erreur correspondant, ainsi qu'une liste remplie de 0.
           res = [[0] * nomb, [0] * nomb]
           return er.ErreurEval.FONCTION_VIDE, res
@@ -218,17 +218,28 @@ def evaluateur(arbre,nomb, xmin, xmax):
             res[1][i] = None
         if isinstance(res[1][i], complex): # S'il a une image mais qu'elle est complexe, alors son image est un None.
             res[1][i] = None
-        nb_defini = 0 # On souhaite tester si la fonction est defini sur l'ensemble
+        nb_defini = 0 # On souhaite tester si la fonction est définie sur l'ensemble
         for i in range(nomb) :
-           if res[1][i] is not None : # On compte les nombre defini
+           if res[1][i] is not None : # On compte les nombres définis
               nb_defini += 1
-        if nb_defini < 2 : # Si y'a moin de deux nombres défini on return une erreur non defini
-           return er.ErreurEval.FULL_NONE, res
+        if nb_defini < 2 : # Si y'a moins de deux nombres définis on retourne une erreur "non défini"
+          return er.ErreurEval.FULL_NONE, res
     return er.ErreurEval.PAS_D_ERREUR, res # On retourne le code qui dit qu'il n'y a pas d'erreur et on retourne la liste contenant en première ligne les antécédants, et en seconde les images
 
-""""
+
+
+"""
+
+#Pour tester l'erreur XMIN_SUPERIEUR_A_XMAX (de la bibliothèque erreurs.py), on entre sur l'interface utilisateur un intervalle erroné, par exemple : [20;5]. Le site renvoie un message d'erreur (du promptErreurEval) à l'utilisateur. 
+
+#Pour tester l'erreur ITERATIONS_INSUFFISANTES (de la bibliothèque erreurs.py), on entre un nombre d'itérations inférieur à 2, par exemple : -2. Le site affiche une erreur à l'utilisateur qui lui indique d'entrer un nombre supérieur ou égal à 2.
+
+
+
 #------------------------------------ Arbres de tests ----------------------------------------------
 # Tous les "résultats attendus" sont faits avec l'appel : evaluateur(arbre, 10, -5, 4).
+# A l'exception de l'arbre 2 : son but est de vérifier comment sont gérées les sorties complexes
+
 #Arbre de test 1
 # On fabrique les jetons de chaque opération/fonction/valeur
 jet1 = c.Jeton(c.Lexeme.OPERATEUR, c.Operateur.ADDITION)
@@ -274,7 +285,8 @@ arbretest2.fils_droit.insert_gauche(jet6)
 #Fin de l'arbre de test 2
 # Sert à vérifier
 # f(x) = sqrt(x)/3 + (-1)^x
-# Résultat attendu pour evaluateur(arbretest2,10,-1,1): (<ErreurEval.PAS_D_ERREUR: 400>, [[-1.0, -0.7777777777777778, -0.5555555555555556, -0.33333333333333337, -0.11111111111111116, 0.11111111111111116, 0.33333333333333326, 0.5555555555555556, 0.7777777777777777, 1.0], [None, None, None, None, None, None, None, None, None, -0.6666666666666667]])
+# Résultat attendu pour evaluateur(arbretest2,10,-1,1): (<ErreurEval.FULL_NONE: 404>, [[-1.0, -0.7777777777777778, -0.5555555555555556, -0.33333333333333337, -0.11111111111111116, 0.11111111111111116, 0.33333333333333326, 0.5555555555555556, 0.7777777777777777, 1.0], [None, None, None, None, None, None, None, None, None, 0]])
+# L'erreur FULL_NONE est renvoyée lorsqu'il y a moins de deux x sur l'intervalle qui ont une image réelle.
 
 #Arbre de test 3
 jet1 = c.Jeton(c.Lexeme.OPERATEUR, c.Operateur.ADDITION)
@@ -303,7 +315,7 @@ jet1 = c.Jeton(c.Lexeme.OPERATEUR, c.Operateur.DIVISION)
 jet2 = c.Jeton(c.Lexeme.FONCTION, c.Fonction.SIN)
 jet3 = c.Jeton(c.Lexeme.FONCTION, c.Fonction.EXP)
 jet4 = c.Jeton(c.Lexeme.FONCTION, c.Fonction.COS)
-jet5 = c.Jeto n(c.Lexeme.OPERATEUR, c.Operateur.SOUSTRACTION)
+jet5 = c.Jeton(c.Lexeme.OPERATEUR, c.Operateur.SOUSTRACTION)
 jet6 = c.Jeton(c.Lexeme.OPERATEUR, c.Operateur.PUISSANCE)
 jet7 = c.Jeton(c.Lexeme.OPERATEUR, c.Operateur.MULTIPLICATION)
 jet8 = c.Jeton(c.Lexeme.FONCTION, c.Fonction.LOG)
@@ -352,7 +364,7 @@ arbretest5.insert_droit(jet3)
 arbretest5.fils_droit.insert_gauche(jet6)
 #Fin de l'arbre de test 5
 # f(x) = 5/0 (division par 0)
-# Résultat attendu : (<ErreurEval.PAS_D_ERREUR: 400>, [[-5.0, -4.0, -3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0], [None, None, None, None, None, None, None, None, None, None]])
+# Résultat attendu : (<ErreurEval.FULL_NONE: 404>, [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [None, None, None, None, None, None, None, None, None, None]])
 
 
 #Arbre de test 6
@@ -369,7 +381,7 @@ arbretest6.fils_droit.insert_gauche(jet4)
 arbretest6.fils_droit.insert_droit(jet5)
 
 #Fin de l'arbre de test 6
-# f(x) = (-1)^(1/x) (contient des images compelxes et une division par 0)
+# f(x) = (-1)^(1/x) (contient des images complexes et une division par 0)
 # Résultat attendu : (<ErreurEval.PAS_D_ERREUR: 400>, [[-5.0, -4.0, -3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0], [None, None, None, None, -1.0, None, -1.0, None, None, None]])
 
 #Arbre de test 7
@@ -394,34 +406,31 @@ arbretest7.fils_droit.fils_droit.insert_droit(jet7)
 # Résultat attendu : (<ErreurEval.PAS_D_ERREUR: 400>, [[-5.0, -4.0, -3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0], [1.0084239171861806, 1.0721470652975371, 1.9207483515575248, 1.0486897397679718, 1.1883951057781212, None, 0.8414709848078965, 0.9535708819095106, 0.5206304090742055, 0.9327078647764472]])
 
 
-#---------------------------------------- Fin des arbres de tests -----------------------------------
-
-Pour tester l'erreur XMIN_SUPERIEUR_A_XMAX (de la bibliothèque erreurs.py), on entre sur l'interface utilisateur un intervalle erroné, par exemple : [20;5]. Le site renvoie un message d'erreur (du promptErreurEval) à l'utilisateur. 
-
-Pour tester l'erreur ITERATIONS_INSUFFISANTES (de la bibliothèque erreurs.py), on entre un nombre d'itérations inférieur à 2, par exemple : -2. Le site affiche une erreur à l'utilisateur qui lui indique d'entrer un nombre supérieur ou égal à 2.
+#---------------------------------------- Fin des arbres de tests ----------------------------------
 
 
-Evaluation des arbres de test et affichage des listes de sortie: 
 
-liste = evaluateur.evaluateur(evaluateur.arbretest1,10,-5,4)
+#Evaluation des arbres de test et affichage des listes de sortie: 
+
+liste = evaluateur(arbretest1,10,-5,4)
 print(liste)
 print("\n")
-liste = evaluateur.evaluateur(evaluateur.arbretest2,10,-1,1)
+liste = evaluateur(arbretest2,10,-1,1)
 print(liste)
 print("\n")
-liste = evaluateur.evaluateur(evaluateur.arbretest3,10,-5,4)
+liste = evaluateur(arbretest3,10,-5,4)
 print(liste)
 print("\n")
-liste = evaluateur.evaluateur(evaluateur.arbretest4,10,-5,4)
+liste = evaluateur(arbretest4,10,-5,4)
 print(liste)
 print("\n")
-liste = evaluateur.evaluateur(evaluateur.arbretest5,10,-5,4)
+liste = evaluateur(arbretest5,10,-5,4)
 print(liste)
 print("\n")
-liste = evaluateur.evaluateur(evaluateur.arbretest6,10,-5,4)
+liste = evaluateur(arbretest6,10,-5,4)
 print(liste)
 print("\n")
-liste = evaluateur.evaluateur(evaluateur.arbretest7,10,-5,4)
+liste = evaluateur(arbretest7,10,-5,4)
 print(liste)
 print("\n")
 """
