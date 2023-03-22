@@ -1,118 +1,219 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+body, html {
+    margin:0px;
+    font-family: 'Orbitron', sans-serif;
+   
+}
 
 body {
-  font-family: 'Roboto'sans-serif ;
-  margin: 0 ;
-  padding: 0 ;
-  list-style: none ;
-  text-decoration: none ;
-  color: white ;
-  background: rgb(27,27,27);
+    background: rgb(27,27,27);
+    color: white;
+
 }
+/*animationss*/
 
-#PrincipalBox{
-  position: absolute ;
-  top: 50% ;
-  left: 50% ;
-  text-align: center ;
-  transform: translate(-50%, -50%) ;
 
-  border : 1px solid #D73411;
-  /*border-radius: 24px ; */
-  width: 65% ;
-  height: 75% ;
-
-  transition: 0.6s ;
+/*logo*/
+logo1 {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    size: 20%;
+    margin-top: 0px;
+    margin-left: 0px;
+    z-index: 100000;
+    cursor: pointer;
+    width: 100px;
+    height: 100px;
+    transition: all 0.3s ease-in-out 0s;
+  }
+  
+  logo1:hover
+  {
+      cursor: default;
+      transform: rotate(360deg);
+      transition: all 0.3s ease-in-out 0s;
+  }
+.fonction {
+position: absolute;
+top: 90vh;
+right :45vw;
 }
+.submit {
+position: absolute;
+margin: auto;
+top: 90vh;
+right :50vw;
 
-
-
-
-
-
-
-#graphe{
-  position: relative ;
-  center: bottom;
-  top: 55% ;
-  /*left: 50% ;*/
-  text-align: center ;
-  transform: translate(0%, -50%) ;
-
-  border : 1px solid #D73411;
-  /*border-radius: 24px ; */
-  background-color: white;
-  transition: 0.6s ;
 }
 
 
 
-
-
-
-
-.InputFunction {
-  position: relative ;
-  center:top;
-  width:100% ;
-  height: 15% ;
-  text-align: center ;
-  transition: 0.6s ;
-  background-color: darkgrey;
-}
-
-.InputFunction input[type=text]{
-  float:center ;
-  font-size: 18px ;
-  border: 0 ;
-  background: none;
-  display: block;
-  margin: 20px auto;
-  text-align: center ;
-  border: 2px solid #006feb ;
-  padding: 14px 10px ;
-  width: 50% ;
-  outline: none ;
-  color: White ;
-  border-radius: 24px ;
-  transition: 0.4s ;
-}
-
-/*
-.InputFunction input[type=text]:focus,
-.InputFunction input[type=text]:hover{
-  width: 280px;
-  border-color: #2ecc71 ;*/
-
+canvas{
+background-color: white;
+border-color: #F54703;
+width: 70vw;
+margin-top: 10vh;
+margin-left: 9vw;
+margin-right: 10vw;
+margin-bottom: 10vh;
 
 }
-.InputFunction input[type=submit]{
-  float:right;
-  font-size: 18px ;
-  text-transform: uppercase ;
-  border: 0;
-  background: none;
-  display: block;
-  margin: 20px auto;
-  text-align: center ;
-  border: 2px solid #D73411 ;
-  padding: 14px 40px ;
-  outline: none ;
-  color: White ;
-  border-radius: 24px ;
-  transition: 0.4s ;
-  cursor: pointer ;
+
+.button {
+    position: absolute;
+    background-color: #F54703;
+    border: none;
+    top: 85vh;
+    left: 70vw;
+    font-size: 20px;
+    font-family: 'Orbitron', sans-serif;
+    color: #FFFFFF;
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;    
+  }
+  
+  .button:after {
+    content: "";
+    background: #f1f1f1;
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px !important;
+    margin-top: -120%;
+    opacity: 0;
+    transition: all 0.8s
+  }
+  
+  .button:active:after {
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s
+  }
+
+.fonction{
+    position: absolute;
+    background-color: #F54703;
+    border: none;
+    top: 85vh;
+    left: 35vw;
+    font-size: 20px;
+    font-family: 'Orbitron', sans-serif;
+    color: rgb(27,27,27);
+    padding: 20px;
+    width: 25vw;
+    text-align: center;
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+    text-align: center;
 }
 
-.InputFunction input[type=submit]:hover{
-  padding: 14px 60px ;
-  background-color: #D73411 ;
+.rangeleft {
+    text-align: center;
+    position: absolute;
+    background-color: rgb(27,27,27);
+    border: none;
+    z-index: 10;
+    top: 85.9vh;
+    width: 5vw;
+    right: 85vw;
+    font-size: 18px;
+    color: white;
 }
 
+.rangeright {
+    position: absolute;
+    background-color: rgb(27,27,27);
+    border: none;
+    z-index: 10;
+    top: 85.9vh;
+    width: 5vw;
+    right: 75vw;
+    font-size: 18px;
+    color: white;
+}
 
-/* ==== SECTION ==== */
+.iteration   {
+    position: absolute;
+    background-color: rgb(27,27,27);
+    border: none;
+    top: 89.9vh;
+    width: 5vw;
+    right: 85vw;
+    font-size: 18px;
+    color: white;
+    z-index: 10;
+}
 
-section {
-  background-color: darkgray;
+.cache{
+    position: absolute;
+    background-color: #F54703;
+    border: none;
+    top: 85vh;
+    left: 9vw;
+    font-size: 20px;
+    font-family: 'Orbitron', sans-serif;
+    color: rgb(27,27,27);
+    padding: 20px;
+    width: 14vw;
+    height: 3.2vh;
+    z-index: 0;
 
 }
+
+h10{
+background-color:rgb(27,27,27) ;
+position: absolute;
+top:85.9vh;
+right:78vw;
+z-index: 9;
+margin-left: 1vw ;
+margin-right: 1vw ;
+font-size: 18px;
+padding-left: 1vw;
+padding-right: 2vw;
+padding-bottom: 0.1vh;
+
+}
+
+h11{
+    background-color:rgb(27,27,27) ;
+    position: absolute;
+    top:89.9vh;
+    right:76vw;
+    z-index: 9  ;
+    margin-left: 1vw ;
+    margin-right: 1vw ;
+    font-size: 18px;
+    padding-right: 10px;
+    padding-top: 0.1vh;
+    padding-left: 2vw   ;
+
+    
+    }
+
+    .couleur {
+position: absolute;
+right: 8vw;
+top : 20vh;
+
+    }
+
+h2{
+    position: absolute;
+
+    top: 25vh;
+    right: 5vw;
+    font-size: 12px;
+}
+    
+
+
+

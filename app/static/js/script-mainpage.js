@@ -5,68 +5,110 @@
 //--------------------------------------------------------------------------------------------------------------------
 
 
-window.addEventListener('input', function(event) { //on détecte tout changement d'entrée sur la page web
-    const fonction = document.getElementById('fonction'); //on récupère le champ contenant la fonction
-    if (fonction != event.target && fonction.value != '') { //si le champ dont le contenu a changé n'est pas le champ d'entrée de la fonction et que le champ de fonction n'est pas vide, alors on peut commencer à faire des tests
-    //on fait cette vérification car si on fait une requête dès qu'on modifie la fonction, alors on aura une erreur à chaque modification jusqu'à ce que la fonction entrée soit correcte
-        const xrangemin = document.getElementById("xrangemin"); //on affecte à une constante les champs d'entrées de x
-        const xrangemax = document.getElementById("xrangemax");
-        var xmin = Number(xrangemin.value); //on affecte à une variable la valeur des champps d'entrées de x
-        var xmax = Number(xrangemax.value);
-        
-        if (xrangemin.value != '' && xrangemax != '') { //on vérifie tout d'abord que les 2 champs ne sont pas vide afin de pouvoir tout effacer et ne pas avoir de message d'erreur
-            if (xmin >= xmax) { //le x min doit être inférieur au x max
-                if (event.target == xrangemax) {
-                    xrangemax.value = xmin+1; //si ce n'est pas le cas on réinitialise la valeur
-                } else {
-                    xrangemin.value = xmax-1;ctx.font = "9pt serif"; //on définit la police d'écriture des données
-    ctx.strokeStyle = "black"; //on définit la couleur des axes d'origine
-    ctx.beginPath(); //on commence à dessiner
-    ctx.clearRect(0,0,Lx,Ly); //on efface tout ce qu'il y a dans le canva
-    ctx.fillText("y",Lx/100,Ly*(4/100)); //on écrit "x" et "y" à côté de l'axe des abscisses et des ordonnées
-    ctx.fillText("x",Lx*(1-2/100),Ly*(1-2/100));
-    
-    if (a <= 0 && b >= 0) { //on affiche l'axe des abscisses si et seulement si l'ordonnée minimum est négative et l'ordonnée maximum et positive
-        let d = b/(dist_ord)*Ly; //on définit la distance séparant le bord du canva de l'axe des abscisses
-        ctx.moveTo(0,d); //on déplace le crayon aux coordonnées indiquées
-        ctx.lineTo(Lx,d); //on dessine une ligne jusqu'aux coordonnées indiquées
-    }
-    
-    if (x0 <= 0 && x1 >= 0) { //même principe pour l'axe des ordonnées
-        let c = -x0/(dist_abs)*Lx;
-        ctx.moveTo(c,0);
-        ctx.lineTo(c,Ly);
-    }
-    ctx.stroke(); //on arrête de dessiner
-                }
-                window.alert("x mininimum doit être strictement inférieur à x maximum."); //on affiche alors une alerte
-            } else {
-                const discretisation = document.getElementById("discretisation"); //on affecte à une constante le champ d'entrée de la discrétisation
-                var discret = Number(discretisation.value); //on affecte à une variable la valeur du champ d'entrée de la discrétisation
-                if (discretisation.value != '') { //on vérifie tout d'abord que le champ n'est pas vide
-                    if (discret <= 1) { //la discrétisation doit être supéieur à 2
-                        discretisation.value = 2;
-                        window.alert("La discrétisation sélectionnée doit au moins être égale à 2.");
-                    } else {
-                        main(); //si toutes les conditions sont satisfaites, alors on va faire une requête via la fonction principale
-                    }
-                }
-            }
-        }
+document.addEventListener("keypress", function(event) { //on détecte toute touche pressée
+    if (event.keyCode == 13) { //si la touche pressée est la touche 'entrée' alors on fait le test des valeurs entrées
+        test_total();
     }
 });
 
 
-document.addEventListener("keypress", function(event) { //on détecte toute touche pressée
-    if (event.keyCode == 13) { //si la touche pressée est la touche 'entrée' alors on actualise la requête
+document.addEventListener("input", function(event) { //on détecte tout changement d'entrée dans les champs
+    const element = event.target; //on récupère l'élément dont on change la valeur
+    const xrangemin = document.getElementById("xrangemin"); //on affecte à une constante les champs d'entrées
+    const xrangemax = document.getElementById("xrangemax");
+    const discretisation = document.getElementById("discretisation");
+    const couleur = document.getElementById("couleur");
+    let result = false; //on initialise une variable qui va nous permettre de décider si l'on fait une requête ou non
+    
+    //cette partie est utile pour modifier les valeurs des champs avec les flèches
+    if (element == xrangemin) { //si l'élément dont on change la valeur est xrangemin
+        if (xrangemin != document.activeElement) { //et si xrangemin n'est pas sélectionné
+            result = test_x(xrangemin,xrangemax,xrangemin); //on va tester la valeur entrée
+        }
+    } else if (element == xrangemax) { //même principe avec xrangemax
+        if (xrangemax != document.activeElement) {
+            result = test_x(xrangemin,xrangemax,xrangemax);
+        }
+    } else if (element == discretisation) { //même principe avec la discrétisation
+        if (discretisation != document.activeElement) {
+            result = test_discretisation(discretisation);
+        }
+    } else if (element == couleur) { //si l'élément dont on change la valeur est la couleur, pas de vérification à faire
+        main();
+    }
+    
+    if (result == true) { //si les valeurs ont passé les tests, alors on va faire une requête
         main();
     }
 });
 
 
+function test_total() {
+    /*
+    fonction qui va tester si les données entrées sont valides ou non
+    */
+    if(typeof jQuery != 'function'){ //si l'on n'a pas pu importer la fonction jQuery, c'est qu'il n'y a pas de connexion au réseau
+        window.alert('La connexion au réseau a échoué.');
+    } else { //si l'on a pu se connecter
+        const xrangemin = document.getElementById("xrangemin"); //on affecte à une constante les champs d'entrées
+        const xrangemax = document.getElementById("xrangemax");
+        const discretisation = document.getElementById("discretisation");
+        if (test_x(xrangemin,xrangemax,xrangemin) == true && test_x(xrangemin,xrangemax,xrangemax) == true && test_discretisation(discretisation) == true) { //si toutes les valeurs passent le test, on fait une requête
+            main();
+        }
+    }
+}
+
+
+function test_x(xrangemin,xrangemax,element_change) {
+    /*
+    fonction qui teste la valeur des entrées x
+    parameters : xrangemin le champ d'entrée de xrangemin
+                 xrangemax le champ d'entrée de xrangemax
+                 element_change l'élément dont on vient de changer la valeur
+    output : un booléen si oui ou non les valeurs entrées sont correctes
+    */
+    let xmin = Number(xrangemin.value); //on récupère les valeurs des champs
+    let xmax = Number(xrangemax.value);
+    if ((xrangemin.value == '') || (xrangemax.value == '')) { //si au moins l'un des champs est vide, on affiche une erreur
+        window.alert("Veuillez entrer une valeur pour x.");
+        return false //les valeurs n'ont pas réussi le test
+    } else if (xmin >= xmax) { //le x min doit être inférieur au x max
+        if (element_change == xrangemin) { //on réinitialise la valeur selon le champ modifié
+            xrangemin.value = xmax-1;
+        } else {
+            xrangemax.value = xmin+1;
+        }
+        window.alert("x mininimum doit être strictement inférieur à x maximum.");
+        return false
+    } else {
+        return true //s'il n'y a pas d'erreur, les valeurs ont réussi le test
+    }
+}
+
+
+function test_discretisation(discretisation) {
+    /*
+    fonction qui teste la valeur de la discrétisation
+    parameter : discretisation le champr d'entrée de la discrétisation
+    output : un booléen si oui ou non la valeur entrée est correcte
+    */
+    if (discretisation.value == '') { //si le champ est vide, on affiche une erreur
+        window.alert("Veuillez entrer une valeur pour la discrétisation.");
+        return false
+    } else if (Number(discretisation.value) <= 1) { //il faut que la discrétisation soit au moins égale à 2
+        discretisation.value = 2; //si ce n'est pas le cas, on réinitialise la valeur à 2
+        window.alert("La discrétisation sélectionnée doit au moins être égale à 2.");
+        return false
+    } else {
+        return true
+    }
+}
+
+
 function main() {
     /*
-    fonction appelée lorsque l'on clique sur le bouton dans la mainpage ou lorsque l'on modifie un champ
+    fonction appelée lorsque l'on veut faire une requête au serveur
     elle va récupérer les données entrées sur le site web, les envoyer au serveur python qui va s'occupper de l'analyse, puis récupérer les données finales afin d'afficher le graphe
     */
     const xrangemin = document.getElementById("xrangemin").value; //on récupère les données entrées
@@ -75,9 +117,9 @@ function main() {
     const couleur = document.getElementById("couleur").value;
     const fonction = document.getElementById("fonction").value;
     const dict_values = {xrangemin,xrangemax,discretisation,couleur,fonction}; //on stocke les données dans un dictionnaire
-    const s = JSON.stringify(dict_values); //on convertit le dictionnaire au format JSON
+    const s = JSON.stringify(dict_values); //on convertit le dictionnaire au format JSON afin de pouvoir l'envoyer au serveur
     
-    $.ajax({ //on utilise ajax avec la bibliothèque jQuery qui permet d'échanger des fichiers JSON avec le serveur
+    $.ajax({ //on utilise la bibliothèque ajax qui permet d'échanger des fichiers JSON avec le serveur
         url:'/mainpage/calculate', //on définit la nouvelle url affiliée lorsqu'on aura fait la requête
         type:"POST", //on veut poster des données sur le serveur
         contentType: "application/json;charset=UTF-8", //on veut transmettre un fichier JSON
@@ -90,8 +132,8 @@ function main() {
                 draw(canva,data["sortie"],data["couleur"]); //on appelle la fonction d'affichage
             }
         },
-        error: function(error) { //si la requête s'est mal passée, on affiche l'erreur
-            window.alert('gg')
+        error: function() { //si la requête s'est mal passée, on affiche l'erreur
+            window.alert('La requête a échoué.')
         }
     });
 }
@@ -199,39 +241,37 @@ function draw(canva,donnees,couleur) {
  d'abscisses et un d'ordonnées
                  couleur la couleur de la courbe choisie
     */
-    const Lx = canva.getAttribute("width"); //on récupère la largeur et la hauteur du canva en pixels
+    const Lx = canva.getAttribute("width"); //on initialise la taille du canva selon les valeurs entrées dans le fichier HTML
     const Ly = canva.getAttribute("height");
     const L = donnees[0].length; //on récupère la taille d'une des deux dimensions du tableau de données
     const [a,b] = minmax(donnees[1],L); //on va chercher l'ordonnée min et max du tableau
-    const ctx = canva.getContext("2d"); //on spécifie que l'on veut tracer un dessin en 2d
     const [x0,x1] = [donnees[0][0],donnees[0][L-1]]; //on récupère l'abscisse min et max du tableau
     const dist_abs = x1-x0; //on définit la largeur mathématique du graphe
     const dist_ord = b-a; //on définit la hauteur mathématique du graphe
+    const ctx = canva.getContext("2d"); //on spécifie que l'on veut tracer un dessin en 2d
     
     ctx.strokeStyle = couleur; //on définit la couleur du tracé de la courbe
     ctx.lineWidth = 2; //on définit la largeur du tracé de la courbe
-    ctx.beginPath();
+    ctx.beginPath(); //on commence à dessiner
     ctx.clearRect(0,0,Lx,Ly); //on efface tout ce qu'il y a dans le canva
+    
+    //cette partie va permettre de tracer la courbe de la fonction entrée
     var prochain = [donnees[0][0],donnees[1][0]]; //on initialise le prochain point comme le premier point
     let index = 1; //on définit l'indexation de l'élément dans la liste
-    while (prochain[1] == null) { //si l'ordonnée de l'élément est nul alors on choisit le prochain élément
-        if (index < L) { //si l'index est accessible
-            prochain = [donnees[0][index],donnees[1][index]];
-            index += 1;
-        }
+    while (prochain[1] == null && index < L) { //tant que l'ordonnée de l'élément est nul, on choisit le prochain élément
+        prochain = [donnees[0][index],donnees[1][index]];
+        index += 1;
     }
     if (prochain[1] != null) { //on vérifie que l'ordonnée existe bien (pour les discontinuités de fonction)
         ctx.moveTo(fx(x0,prochain[0],dist_abs,Lx),fy(b,prochain[1],dist_ord,Ly)); //on se déplace au premier point
-        for (var i = 1;i < L;i++) { //on parcourt tous les points du tableau donné
+        for (var i = index;i < L;i++) { //on parcourt tous les points du tableau donné
             prochain = [donnees[0][i],donnees[1][i]]; //on définit le prochain point
-            if (prochain[1] != null && prochain[1]) { //si l'ordonnée n'est pas nulle on trace un segment
+            if (prochain[1] != null) { //si l'ordonnée n'est pas nulle on trace un segment
                 ctx.lineTo(fx(x0,prochain[0],dist_abs,Lx),fy(b,prochain[1],dist_ord,Ly)); //on trace une ligne jusqu'au prochain point
             } else { //sinon on se déplace au prochain point existant sans dessiner
-                while (prochain[1] == null) {
-                    if (i < L) {
-                        i += 1;
-                        prochain = [donnees[0][i],donnees[1][i]];
-                    }
+                while (prochain[1] == null && i < L) {
+                    i += 1;
+                    prochain = [donnees[0][i],donnees[1][i]];
                 }
                 if (prochain[1] != null) {
                     ctx.moveTo(fx(x0,prochain[0],dist_abs,Lx),fy(b,prochain[1],dist_ord,Ly));
@@ -239,8 +279,7 @@ function draw(canva,donnees,couleur) {
             }
         }
     }
-    ctx.stroke();
-    
+    ctx.stroke(); //on arrête de dessiner
     const puissancex = trouver_puissance(dist_abs); //on va chercher la puissance de 10 utilisée pour l'affichage en abscisse et en ordonnée
     const puissancey = trouver_puissance(dist_ord);
     const dixpuissancex = Math.pow(10,puissancex); //on définit les valeurs de 10^puissance
@@ -249,10 +288,11 @@ function draw(canva,donnees,couleur) {
     const premiery = trouver_premiery(b,dixpuissancey);
     
     ctx.strokeStyle = "silver"; //on définit la couleur du quadrillage
-    ctx.font = "8pt serif"; //on définit la police d'écriture des valeurs
+    ctx.font = "125% serif"; //on définit la police d'écriture des valeurs
     ctx.lineWidth = 1;
     ctx.beginPath();
     
+    //cette partie va permettre de tracer le quadrillage et d'afficher les valeurs correspondantes
     for (var i = 0;i < dist_abs/dixpuissancex;i++) { //on va tracer un certain nombre d'axe des ordonnées pour le quadrillage
         let valuex = premierx+i*dixpuissancex; //on définit l'abscisse mathématique de l'axe
         let abscisse = fx(x0,valuex,dist_abs,Lx); //on convertit cette abscisse en pixels
@@ -284,23 +324,32 @@ function draw(canva,donnees,couleur) {
     }
     ctx.stroke();
     
-    ctx.font = "9pt serif"; //on définit la police d'écriture des données
+    //cette partie va permettre de tracer les axes des origines et d'écrire "x" et "y"
+    ctx.font = "130% serif"; //on définit la police d'écriture des données
     ctx.strokeStyle = "black"; //on définit la couleur des axes d'origine
     ctx.lineWidth = 2;
-    ctx.beginPath(); //on commence à dessiner
+    ctx.beginPath();
     ctx.fillText("y",Lx/100,Ly*(4/100)); //on écrit "x" et "y" à côté de l'axe des abscisses et des ordonnées
     ctx.fillText("x",Lx*(1-2/100),Ly*(1-2/100));
+    const longueur_fleche = Lx/100; //on définit la taille des flèches des axes
+    const demi_largeur_fleche = Ly/100
     
     if (a <= 0 && b >= 0) { //on affiche l'axe des abscisses si et seulement si l'ordonnée minimum est négative et l'ordonnée maximum et positive
         let d = b/(dist_ord)*Ly; //on définit la distance séparant le bord du canva de l'axe des abscisses
         ctx.moveTo(0,d); //on déplace le crayon aux coordonnées indiquées
         ctx.lineTo(Lx,d); //on dessine une ligne jusqu'aux coordonnées indiquées
+        ctx.lineTo(Lx-longueur_fleche,d-demi_largeur_fleche); //on affiche une flèche au bout de l'axe
+        ctx.moveTo(Lx,d);
+        ctx.lineTo(Lx-longueur_fleche,d+demi_largeur_fleche);
     }
     
     if (x0 <= 0 && x1 >= 0) { //même principe pour l'axe des ordonnées
         let c = -x0/(dist_abs)*Lx;
+        ctx.moveTo(c,Ly);
+        ctx.lineTo(c,0);
+        ctx.lineTo(c-demi_largeur_fleche,longueur_fleche);
         ctx.moveTo(c,0);
-        ctx.lineTo(c,Ly);
+        ctx.lineTo(c+demi_largeur_fleche,longueur_fleche);
     }
-    ctx.stroke(); //on arrête de dessiner
+    ctx.stroke();
 }

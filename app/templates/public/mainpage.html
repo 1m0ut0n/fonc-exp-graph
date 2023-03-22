@@ -1,35 +1,52 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr" dir="ltr">
   <head>
     <meta charset="utf-8">
     <title>FEUR</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style_mainpage.css') }}">
     <script src="{{ url_for('static', filename='js/script-mainpage.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Tilt+Prism&display=swap');
+			</style>
   </head>
 
 
 
-  <body>
 
 
-    <div id="PrincipalBox">
+<body>
 
-      <div class="InputFunction">
-        <input type="number" id="xrangemin" placeholder="-10" value="-10">
-        <p>&#60 x &#60 </p>
-        <input type="number" id="xrangemax" placeholder="10" value="10">
-        <input type="number" id="discretisation" placeholder="10" value="10">
-        <input type="text" id="fonction" placeholder="Entrez une fonction" required>
-        <input type="color" id="couleur">
-        <input type="submit" id="submit" value="Afficher" onclick="main();">
+  <canvas id="graphe" class="graph" width=1920 height=900></canvas>
+  
+  <div class="cache"></div>
+  <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><logo1><img src="{{ url_for('static', filename='img/CALCULATOR.png') }}" style="width:100px;height:100px;z-index: 100000;"></logo1></a>
+      
+    <div class="InputFunction">
+      
+      <div class="range">
+        <input type="number" id="xrangemin" class="rangeleft" placeholder="min" value="-10">
+        <input type="number" id="xrangemax" class="rangeright" placeholder="max" value="10">
+        <input type="number" id="discretisation" class="iteration" placeholder="Nombre d'itération" value="100">
+        <text><h10>&#60 x &#60</h10><h11>Précision</h11></text>
+        
+      </div>  
+
+      <input type="text" id="fonction" class="fonction" placeholder="Entrez une fonction" required>
+      <button class="button" onclick="test_total();">Afficher</button>   
+    <h2 class="color">Couleur de la courbe</h2>
+    <input type="color" id="couleur" class="couleur" placeholder="Choisissez la couleur de la courbe">
+    </div> 
+
+      
+    
+         
       </div>
-      <canvas id="graphe" height="300" width="500">
-      </canvas>
-      <section>
-      </section>
 
-    </div>
-  </body>
+      
+</body>
 
 </html>
