@@ -222,7 +222,7 @@ def evaluateur(arbre,nomb, xmin, xmax):
         for i in range(nomb) :
            if res[1][i] is not None : # On compte les nombre defini
               nb_defini += 1
-        if nb_none < 2 : # Si y'a moin de deux nombres défini on return une erreur non defini
+        if nb_defini < 2 : # Si y'a moin de deux nombres défini on return une erreur non defini
            return er.ErreurEval.FULL_NONE, res
     return er.ErreurEval.PAS_D_ERREUR, res # On retourne le code qui dit qu'il n'y a pas d'erreur et on retourne la liste contenant en première ligne les antécédants, et en seconde les images
 
