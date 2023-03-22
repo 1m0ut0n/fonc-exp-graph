@@ -1,6 +1,9 @@
 # Le Fantastique Expositeur Ultime de Résultat (FEUR)
 
 Intro *(à compléter ...)*
+
+Ce compte rendu du travail de groupe rend compte de notre projet de création d'une calculatrice graphique en ligne. Ce projet, réalisé par notre équipe de travail composée de 10 personnes, a pour objectif de fournir un outil pratique et efficace aux utilisateurs qui souhaitent effectuer des calculs mathématiques complexes et visualiser les résultats sous forme graphique. Au cours de notre collaboration, nous avons travaillé ensemble pour concevoir et développer une interface utilisateur conviviale, ainsi que pour intégrer les fonctionnalités de calcul et de tracé graphique dans notre application. Dans ce compte rendu, nous décrirons les différentes étapes de notre processus de travail, les obstacles rencontrés et les solutions que nous avons trouvées pour surmonter ces défis. Enfin, nous ferons un bilan de notre travail et évaluerons les résultats obtenus en termes de fonctionnalités, de performance et de convivialité de l'application.
+
 > Noms
 
 
