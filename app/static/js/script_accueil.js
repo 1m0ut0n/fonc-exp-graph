@@ -10,10 +10,6 @@ window.addEventListener(
   );
 
 
-document.querySelector('h1').addEventListener('click', function() {
-  alert("pourquoi tu cliques fdp ?????");
-  })
-
 
   const observer = new IntersectionObserver(entries => {
     entries.forEach((entry) => {
