@@ -297,7 +297,7 @@ jet1 = c.Jeton(c.Lexeme.OPERATEUR, c.Operateur.DIVISION)
 jet2 = c.Jeton(c.Lexeme.FONCTION, c.Fonction.SIN)
 jet3 = c.Jeton(c.Lexeme.FONCTION, c.Fonction.EXP)
 jet4 = c.Jeton(c.Lexeme.FONCTION, c.Fonction.COS)
-jet5 = c.Jeton(c.Lexeme.OPERATEUR, c.Operateur.SOUSTRACTION)
+jet5 = c.Jeto n(c.Lexeme.OPERATEUR, c.Operateur.SOUSTRACTION)
 jet6 = c.Jeton(c.Lexeme.OPERATEUR, c.Operateur.PUISSANCE)
 jet7 = c.Jeton(c.Lexeme.OPERATEUR, c.Operateur.MULTIPLICATION)
 jet8 = c.Jeton(c.Lexeme.FONCTION, c.Fonction.LOG)
@@ -390,9 +390,12 @@ arbretest7.fils_droit.fils_droit.insert_droit(jet7)
 
 #---------------------------------------- Fin des arbres de tests -----------------------------------
 
+Pour tester l'erreur XMIN_SUPERIEUR_A_XMAX (de la bibliothèque erreurs.py), on entre sur l'interface utilisateur un intervalle erroné, par exemple : [20;5]. Le site renvoie un message d'erreur (du promptErreurEval) à l'utilisateur. 
+
+Pour tester l'erreur ITERATIONS_INSUFFISANTES (de la bibliothèque erreurs.py), on entre un nombre d'itérations inférieur à 2, par exemple : -2. Le site affiche une erreur à l'utilisateur qui lui indique d'entrer un nombre supérieur ou égal à 2.
 
 
-Affichage des arbres de test : 
+Evaluation des arbres de test et affichage des listes de sortie: 
 
 liste = evaluateur.evaluateur(evaluateur.arbretest1,10,-5,4)
 print(liste)
