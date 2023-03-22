@@ -1,4 +1,5 @@
-//par Arthur, Adam, Antoine
+// Par Arthur, Adam, Antoine
+// Utilisez le navigateur Mozilla Firefox pour un affichage dynamique
 
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -23,7 +24,7 @@ document.addEventListener("input", function(event) { //on détecte tout changeme
     const couleur = document.getElementById("couleur");
     let result = false; //on initialise une variable qui va nous permettre de décider si l'on fait une requête ou non
     
-    //cette partie est utile pour modifier les valeurs des champs avec les flèches
+    //cette partie est utile pour modifier les valeurs des champs avec les flèches dynamiquement (sur Firefox)
     if (element == xrangemin) { //si l'élément dont on change la valeur est xrangemin
         if (xrangemin != document.activeElement) { //et si xrangemin n'est pas sélectionné
             result = test_x(xrangemin,xrangemax,xrangemin); //on va tester la valeur entrée
@@ -291,7 +292,7 @@ function draw(canva,donnees,couleur) {
     }
     ctx.stroke(); //on arrête de dessiner
     
-    const puissancex = trouver_puissance(dist_abs); //on va chercher la puissance de 10 utilisée pour l'affichage en abscisse et en ordonnée
+    const puissancex = trouver_puissance(dist_abs); //on va chercher la puissance de 10 utilisée pour l'affichage en abscisse et en ordonnée (pour placer des axes de quadrillage tous les 10^puissance)
     const puissancey = trouver_puissance(dist_ord);
     const dixpuissancex = Math.pow(10,puissancex); //on définit les valeurs de 10^puissance
     const dixpuissancey = Math.pow(10,puissancey);
@@ -307,8 +308,8 @@ function draw(canva,donnees,couleur) {
     for (var i = 0;i < dist_abs/dixpuissancex;i++) { //on va tracer un certain nombre d'axe des ordonnées pour le quadrillage
         let valuex = premierx+i*dixpuissancex; //on définit l'abscisse mathématique de l'axe
         let abscisse = fx(x0,valuex,dist_abs,Lx); //on convertit cette abscisse en pixels
-        let abscisse_val = abscisse+Lx/100; //on définit l'abscisse de la valeur
-        let ordonnee_val = Ly*(1-2/100); //on définit l'ordonnée de la valeur
+        let abscisse_val = abscisse+Lx/100; //on définit la position de la valeur
+        let ordonnee_val = Ly*(1-2/100);
         let valeur_sans_puissancex = Math.round(valuex/dixpuissancex); //on assigne à une variable la valeur du nombre sans sa puissance de 10
         ctx.moveTo(abscisse,0);
         ctx.lineTo(abscisse,Ly); //on trace donc cet axe
@@ -319,7 +320,7 @@ function draw(canva,donnees,couleur) {
         }
     }
     
-    for (var j = 0;j < dist_ord/dixpuissancey;j++) { //même chose pour les axes des abscisses
+    for (var j = 0;j < dist_ord/dixpuissancey;j++) { //même chose pour les axes des abscisses du quadrillage
         let valuey = premiery-j*dixpuissancey;
         let ordonnee = fy(b,valuey,dist_ord,Ly);
         let abscisse_val = Lx/100;
