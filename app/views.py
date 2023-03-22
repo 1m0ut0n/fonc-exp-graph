@@ -1,3 +1,5 @@
+# Par Antoine
+
 from app import app, main
 
 #on importe l'application qui est définie dans le fichier "__init__.py" et le fichier python qui va gérer toutes les fonctions de calcul

@@ -1,3 +1,5 @@
+# Par Antoine
+
 import os, sys
 
 sys.path.append(os.getcwd()+'/app/python') #on modifie le chemin actuel afin de ne pas avoir de problèmes d'importation dans les différents fichiers (car sinon le programme considère que l'on se situe dans le dossier du fichier 'run.py')

@@ -1,3 +1,5 @@
+# Par André-Mathys et Yuzhe
+
 import math
 import common as c
 import erreurs as er

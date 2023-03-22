@@ -1,5 +1,5 @@
 ##############################################################################
-#                              Objets communs                                #
+#                              Objets communs                  (Par Gaspard) #
 #                                                                            #
 # Ce fichier regroupe toute les types de variables spécifiques créé pour     #
 # le calculateur et qui serviront dans plusieurs étapes différentes.         #

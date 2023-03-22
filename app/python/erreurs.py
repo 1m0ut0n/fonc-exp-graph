@@ -1,5 +1,5 @@
 ##############################################################################
-#                           Gestion des erreurs                              #
+#                           Gestion des erreurs                (Par Gaspard) #
 #                                                                            #
 # Ce fichier regroupe toute les types d'erreurs spécifiques créée pour le    #
 # calculateur et qui serviront dans plusieurs étapes différentes. Il y a un  #

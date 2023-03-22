@@ -1,3 +1,5 @@
+# Par Geoffroy et Elvin
+
 from erreurs import ErreurLex
 from common import *
 

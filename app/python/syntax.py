@@ -1,5 +1,5 @@
 ##############################################################################
-#                            Analyse syntaxique                              #
+#                            Analyse syntaxique      (Par Gaspard et Nathan) #
 #                                                                            #
 # L'analyseur syntaxique traite un flux de couples lexème+valeur entrant.    #
 # Son rôle est de vérifier la conformité de l'expression avec la grammaire   #
