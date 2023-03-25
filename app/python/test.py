@@ -20,7 +20,7 @@
 #   que l'on peut visualiser avec https://mermaid.live/                      #
 ##############################################################################
 
-from erreurs import ErreurLex, ErreurSyntax, ErreurEval
+from erreurs import *
 from lex import lex_analyser
 from syntax import syntax_analyser, arbre_to_mermaid
 from evaluator import evaluateur
@@ -41,7 +41,7 @@ else :
 print("\n--- Output Lex ---")
 erreur, liste_sortie = lex_analyser(chaine_entree) # Fonction d'analyse
 if erreur is not ErreurLex.PAS_D_ERREUR :
-    print("/!\ Erreur : " + erreur.name) # Output erreur si erreur
+    print("/!\ Erreur : " + erreur.name + " -> '" + promptErreurLex[erreur] + "'") # Output erreur si erreur
 else :
     print(liste_sortie) # Output sortie si pas d'erreur
 
@@ -51,7 +51,7 @@ else :
     print("\n--- Output Syntax ---")
     erreur, arbre_test = syntax_analyser(liste_sortie) # Fonction d'analyse
     if erreur is not ErreurSyntax.PAS_D_ERREUR :
-        print("/!\ Erreur : " + erreur.name) # Output erreur si erreur
+        print("/!\ Erreur : " + erreur.name + " -> '" + promptErreurLex[erreur] + "'") # Output erreur si erreur
     else :
         print(arbre_test) # Output sortie si pas d'erreur
         print("--- Mermaid ---\n" + arbre_to_mermaid(arbre_test)) # Output sous forme mermaid
@@ -62,9 +62,21 @@ else :
         print("\n--- Output Eval ---")
         erreur, liste_val = evaluateur(arbre_test, 20, -10, 10) # Fonction de calcul
         if erreur is not ErreurEval.PAS_D_ERREUR :
-            print("/!\ Erreur : " + erreur.name) # Output erreur si erreur
+            print("/!\ Erreur : " + erreur.name + " -> '" + promptErreurLex[erreur] + "'") # Output erreur si erreur
         else :
             print("x : " + str(liste_val[0])) # Outputs sortie si pas d'erreur
             print("y : " + str(liste_val[1]))
+print("")
 
 
+"""
+Exemples de fonctions testées :
+
+    Fonctions fonctionnelles :
+
+    
+
+    Erreurs :
+
+
+"""
