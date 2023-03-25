@@ -66,7 +66,7 @@ promptErreurSyntax = {
     ErreurSyntax.RECHERCHE_FIN_PARENTHESE_PAS_DE_PARENTHESE_OUVRANTE : "Une parenthèse ouvrante est manquante dans la fonction.",
     ErreurSyntax.RECHERCHE_FIN_PARENTHESE_PAS_DE_PARENTHESE_FERMANTE_CORRESPONDANTE : "Une parenthèse fermante est manquante dans la fonction.",
     ErreurSyntax.LISTE_VIDE : "Veuillez inserer une fonction.",
-    ErreurSyntax.ERREUR_INCONNUE : "Une erreur inconnue est survenue, veuillez nous en excusez.",
+    ErreurSyntax.ERREUR_INCONNUE : "Verifiez qu'il n'y ai pas de parenthèse vide dans votre fonction. Si ce n'est pas le cas, alors une erreur inconnue est survenue, veuillez nous excuser de la gène occasionnée.",
     ErreurSyntax.OPERATEUR_SANS_VALEUR_A_COTE : "Un operateur ne peut être isolé, il faut une valeur de part et d'autre de ce dernier.",
     ErreurSyntax.FONCTION_SANS_PARENTHESE : "Une fonction ne peut être employée sans parenthèse pour indiquer son paramètre.",
     ErreurSyntax.OBJETS_INCOMPATIBLE : "De objets mathèmatiques situés côte à côte sont imcompatibles entre eux."
