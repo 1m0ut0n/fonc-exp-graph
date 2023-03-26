@@ -93,8 +93,8 @@ def separation(current_table) :
                 return separation(current_table[1:-1])
 
     # On souhaite alors rechercher des operateurs en parcourant le tableau et sans considerer l'interieur des parentheses
-    # Cela se passera en 2 etapes : d'abort on ne testera que les + et - puis on testera les *, / et ^
-    for operateurs_recherches in [[Operateur.ADDITION, Operateur.SOUSTRACTION],[Operateur.MULTIPLICATION, Operateur.DIVISION, Operateur.PUISSANCE]] : # Pour refaire l'analyse deux fois : d'abort avec les opérateurs + et - puis les operateurs *, / et 
+    # Cela se passera en 3 etapes : d'abort on ne testera que les + et - puis on testera les *, / et enfin ^
+    for operateurs_recherches in [[Operateur.ADDITION, Operateur.SOUSTRACTION],[Operateur.MULTIPLICATION, Operateur.DIVISION], [Operateur.PUISSANCE]] : # Pour refaire l'analyse trois fois : d'abort avec les opérateurs + et - puis les operateurs *, / et enfin ^
         i = 0
         while (i < taille) : # On parcours l'ensemble de la liste
 
