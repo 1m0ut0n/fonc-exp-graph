@@ -90,7 +90,22 @@ Afin de mieux comprendre, nous reviendrons **plus en détail sur la manière don
 ### Analyse Lexicale
 > Par *ALBERTOS Elvin* et *BRUNEAU Geoffroy*
 
-Explication  *(à compléter ...)*
+La partie lexicale est la première partie du programme. Elle se situe avant l’analyse syntaxique. Le but de cette fonction est de **récupérer en entrée une chaîne de caractères**, **rentrée par l’utilisateur** pour ressortir un tuple avec le type d’erreur et la **liste de sortie sous forme d’un tableau de lexème** avec deux informations : le type et la valeur.
+
+La fonction commence par **supprimer tous les espaces** dans la chaîne de caractère rentrée par l’utilisateur. Un espace est ensuite ajouté à la fin de la chaîne.
+
+La fonction consiste ensuite à **lire les caractères un par un** à l’aide d’un “match case”, l’équivalent du “switch case” en python.
+
+Si une **parenthèse ou un opérateur** est détecté, on ajoute directement à la liste de sortie le type de lexème et la valeur correspondante. Par exemple si la fonction détecte l’opérateur multiplication "`*`", le type `Lexeme.OPERATEUR` et la valeur `Operateur.MULTIPLICATION` sont ajoutés à la liste de sortie.
+
+Si une lettre minuscule est détectée, la fonction entre alors dans une boucle jusqu’à la dernière lettre minuscule et ajoute les lettres une par une dans une chaîne intermédiaire. Ensuite, un autre “match case” permet de comparer la chaîne intermédiaire aux lexèmes définis auparavant. Si la chaîne intermédiaire est une **fonction ou une variable**, elle est ajoutée à la suite de la liste de sortie.
+On peut remarquer qu’avant les fonctions ou, après et avant une variable, s’il y a un réel, un lexème opérateur de la valeur **multiplication est ajouté** entre le réel et la fonction ou la variable.
+Si **ni une fonction ni une variable** ne sont détectées, la fonction s’arrête et ressort l’erreur `ErreurLex.FONCTION_MAL_ECRITE`.
+
+Si un **réel ou un point** est détecté, la fonction entre alors dans une boucle jusqu’au dernier réel et ajoute les caractères un par un dans une chaîne intermédiaire. 
+A la fin de la boucle, la chaîne intermédiaire est ensuite transformée en *float* et envoyée dans la liste de sortie. Par exemple pour `3.14`, le lexeme `Lexeme.REEL` avec la valeur `3.14` est envoyé à la liste de sortie. On peut remarquer qu’après un réel s’il y a une parenthèse ouvrante, un lexème opérateur de la valeur **multiplication est ajouté** entre le réel et la parenthèse ouvrante.
+
+Enfin si **aucun caractère précédent n’a été détecté** alors la fonction s’arrête et ressort l’erreur `ErreurLex.CARACTERE_NON_RECONNU` ou si la fonction détecte un espace alors la fonction s’arrête et ressort l’erreur `ErreurLex.RIEN_EST_TAPE_PAR_UTILISATEUR`.
 
 
 ### Analyse syntaxique
@@ -125,13 +140,13 @@ $$
 ### Evaluateur
 > Par *ZHU Yuzhe* et *FLINOIS André-Mathys*
 
-La partie évaluateur est la troisième partie du programme. Elle vient après l’analyse lexicale et l’analyse syntaxique. Elle reçoit en entrée un arbre postfixé de jetons, ainsi que les paramètres entrés sur le site web *(nombre d’itérations et intervalle de *$x$*)*. Le défi de cette partie est d’utiliser cet arbre comme une fonction par laquelle une liste d’antécédents passe. La fonction `evaluateur` en elle-même consiste simplement à effectuer quelques tests sur la cohérence des paramètres entrés, puis à créer une liste pour la remplir d’un échantillonnage de valeurs, accompagnées de leur image.
+La partie **évaluateur** est la **troisième partie du programme**. Elle vient après l’analyse lexicale et l’analyse syntaxique. Elle reçoit en entrée un arbre postfixé de jetons, ainsi que les paramètres entrés sur le site web *(nombre d’itérations et intervalle de *$x$*)*. Le défi de cette partie est d’utiliser cet arbre comme une fonction par laquelle une liste d’antécédents passe. La fonction `evaluateur` en elle-même consiste simplement à **effectuer quelques tests sur la cohérence des paramètres entrés**, puis à **créer une liste pour la remplir d’un échantillonnage de valeurs**, **accompagnées de leur image**.
 
-Parmi les tests effectués sur les paramètres, on retrouve la vérification du nombre d’itérations. En effet, pour afficher l’allure d’une fonction, quelle qu’en soit la précision, il faut au minimum 2 points calculés. Si cette exigence n’est pas respectée, une erreur est retournée. L’intervalle entré par l’utilisateur doit être croissant, c’est-à-dire que la valeur minimale des $x$ doit être inférieure à la valeur maximale des $x$.
+Parmi les tests effectués sur les paramètres, on retrouve la **vérification du nombre d’itérations**. En effet, pour afficher l’allure d’une fonction, quelle qu’en soit la précision, il faut au minimum 2 points calculés. Si cette exigence n’est pas respectée, une erreur est retournée. L’intervalle entré par l’utilisateur doit **être croissant**, c’est-à-dire que la valeur minimale des $x$ doit être inférieure à la valeur maximale des $x$.
 
-Une fois ces tests passés, la liste est initialisée, et une boucle for la remplit. Sur la première ligne, on retrouve la liste des antécédents. Sur la seconde, leur image. Pour remplir la seconde ligne, chaque itération de la boucle fait appel à la fonction `postorderTraversal`.
+Une fois ces tests passés, la liste est initialisée, et une boucle for la remplit. Sur la première ligne, on retrouve la **liste des antécédents**. Sur la seconde, **leur image**. Pour remplir la seconde ligne, chaque itération de la boucle fait appel à la fonction `postorderTraversal`.
 
-Cette fonction est à appel récursif. Il n’y en a pas si le jeton est un réel ou la variable *(feuille)*, il y en a un si le jeton est une fonction *(un seul fils)*, et deux si le jeton est une opération *(deux fils)*. D’un accord commun avec la partie de l’analyse syntaxique, le fils unique d’un jeton de fonction est placé à droite. La fonction `postorderTraversal` prend en entrée un arbre binaire ainsi qu’une valeur de $x$. Elle teste d’abord le lexème du premier jeton de l’arbre entré. S’il s’agit d’un réel, alors la fonction retourne la valeur du réel. S’il s’agit d’une variable, alors elle retourne la valeur entrée en paramètre. Si toutefois il s’agit d’un jeton plus complexe *(fonction ou opérateur)*, des tests supplémentaires sont effectués afin de déterminer quel est l’opérateur ou la fonction contenue dans le jeton. Dans ces cas-là, des appels récursifs sont passés.
+Cette fonction est à **appel récursif**. Il n’y en a pas si le jeton est un réel ou la variable *(feuille)*, il y en a un si le jeton est une fonction *(un seul fils)*, et deux si le jeton est une opération *(deux fils)*. D’un accord commun avec la partie de l’analyse syntaxique, le fils unique d’un jeton de fonction est placé à droite. La fonction `postorderTraversal` prend en entrée un **arbre binaire** ainsi qu’**une valeur de** $x$. Elle teste d’abord le lexème du premier jeton de l’arbre entré. S’il s’agit d’un réel, alors la fonction retourne la valeur du réel. S’il s’agit d’une variable, alors elle retourne la valeur entrée en paramètre. Si toutefois il s’agit d’un jeton plus complexe *(fonction ou opérateur)*, des tests supplémentaires sont effectués afin de déterminer quel est l’opérateur ou la fonction contenue dans le jeton. Dans ces cas-là, des appels récursifs sont passés.
 
 Lors des premières versions de notre code, nous avions commis l’erreur de retourner directement le calcul des fils, par exemple :
 ```python
@@ -139,19 +154,37 @@ if arbre.jeton.Lexeme == Lexeme.OPERATEUR :
 	if arbre.jeton.valeur == Operateur.ADDITION 
 		return postorderTraversal(arbre.fils_gauche) + postorderTraversal(arbre.fils_droit)
 ```
-Cette façon d’effectuer les calculs pose problème lorsque la fonction renvoie une erreur, car la ligne du return additionne un réel et une chaîne de caractères, notamment. Le moyen trouvé de pallier ce problème est d’effectuer séparément les appels sur les sous-arbres, s’assurer qu’aucun problème n’en ressort grâce à des tests conditionnels, puis enfin d’effectuer l’opération. Si une erreur est trouvée, l’appel renvoie une chaîne de caractères. Après le calcul des sous-arbres *(`fg` et `fd`)*, leur retour est testé afin d’identifier une erreur. Si elle est repérée, la fonction renvoie la même chaîne, jusqu’au premier appel. Dans la fonction `evaluateur`, la chaîne est identifiée et `evaluateur` renvoie l’erreur correspondante à la chaîne. La division par 0 est gérée en mettant `None` comme image. `None` indique à l’afficheur de ne pas afficher cette valeur. S’il n’y a pas d’erreur, alors la fonction renvoie le code d’erreur success `PAS_D_ERREUR` ainsi que la liste de sortie.
+Cette façon d’effectuer les calculs pose problème lorsque la fonction renvoie une erreur, car la ligne du return additionne un réel et une chaîne de caractères, notamment. Le moyen trouvé de pallier ce problème est d’**effectuer séparément les appels sur les sous-arbres**, **s’assurer qu’aucun problème n’en ressort** grâce à des tests conditionnels, puis enfin d’effectuer l’opération. Si une erreur est trouvée, l’appel renvoie une chaîne de caractères. Après le calcul des sous-arbres *(`fg` et `fd`)*, leur retour est testé afin d’**identifier une erreur**. Si elle est repérée, la fonction renvoie la même chaîne, jusqu’au premier appel. Dans la fonction `evaluateur`, la chaîne est identifiée et `evaluateur` renvoie l’erreur correspondante à la chaîne. **La division par 0 est gérée** en mettant `None` comme image. `None` indique à l’afficheur de ne pas afficher cette valeur. S’il n’y a pas d’erreur, alors la fonction renvoie le code d’erreur success `PAS_D_ERREUR` ainsi que la liste de sortie.
 
 
 ### Serveur (Backend)
 > Par *BURET Antoine*
 
-Explication  *(à compléter ...)*
+Pour réaliser le **lien entre la page web et les fonctions d'analyse** réalisées en Python, on a **créé un serveur en utilisant le framework Flask** qui, pour faire simple, permet de faire du développement web en Python. Ce serveur doit donc simplement **récupérer les données envoyées par le web, appeler les fonctions d'analyse de la fonction saisie et enfin renvoyer les données calculées** pour pouvoir afficher le graphe.
+
+On a donc utilisé 2 fichiers principaux (un pour le **côté web** en JavaScript `script-mainpage.js` et un pour le **côté calcul** en Python `views.py`) ainsi que 2 fichiers supplémentaires en Python afin de faciliter l'utilisation. Un de ces fichiers secondaires, le `__init__.py`, permet simplement d'**initialiser le serveur** et l'autre, le `run.py` permet de **lancer le serveur**.
+
+Dans le fichier principal du côté calcul, on a commencé par **créer de nouvelles URL** et à **initialiser des fonctions** qui s'exécuteront lorsqu'on se situera au niveau de la nouvelle adresse créée. Plus spécifiquement, on a précisé que lorsque l'URL sera `/mainpage/calculate`, on va **exécuter la fonction** `main()` que l'on remplira plus tard. Du côté web, on a **récupéré les données entrées dans les champs** lorsque l'on clique sur le bouton "*Afficher*", lorsque l'on appuie sur la touche entrée ou lorsque on modifie les valeurs via les flèches *(uniquement possible sur le navigateur Mozilla Firefox, autrement dit l'affichage du graphe n'est dynamique en utilisant les flèches que si l'on utilise ce navigateur)*. Après avoir fait des tests pour **vérifier si les données entrées sont correctes** et que l'on est bien connecté à Internet *(cela est nécessaire pour importer le module Ajax depuis Google que l'on va utiliser ci-après)*, on les convertit au format JSON qui peut être géré en JavaScript et en Python. S'il y a une erreur, on la renvoie. Ensuite, on fait donc une **requête au serveur** grâce au module Ajax de la bibliothèque jQuery, on spécifie simplement vers quelle URL on veut se diriger et quelle donnée va être transmise. Ici, on veut donc aller vers l'URL `/mainpage/calculate` et on va **transmettre les données entrées** au format JSON.
+
+Revenons donc au côté serveur dans la fonction `main()` : lorsque l'on est sur la bonne adresse, on **récupère les données transmises lors de la requête** JavaScript puis on les convertit de façon à pouvoir les utiliser en Python. Ensuite, on appelle simplement la fonction principale qui va elle-même **appeler toutes les fonctions d'analyse** de la fonction. Enfin, quand tout cela est réalisé, on **renvoie les données calculées** (sans nécessairement les convertir puisque JavaScript le fait automatiquement).
+
+Les calculs maintenant achevés, on revient au web, et après avoir fait la requête, on **vérifie que la requête s'est bien déroulée**, sinon on affiche une erreur. Et si la requête a fonctionné, on **vérifie que l'analyse de la fonction n'a pas renvoyé d'erreur**, sinon on la renvoie dans une alerte. Si tout s'est bien passé, on **appelle donc la fonction d'affichage** réalisée dans le même fichier JavaScript en spécifiant le canva dans lequel on va dessiner le graphe.
 
 
 ### Affichage Graphique
 > Par *BIDAULT Arthur*, *SALEK Adam* et *BURET Antoine*
 
-Explication  *(à compléter ...)*
+Pour **afficher le graphe** de la fonction entrée en JavaScript, on va utiliser un système très **similaire à Turtle** en Python. Pour faire simple, ici, on ne va **dessiner que des lignes droites dans un Canva HTML**. Les deux principales fonctions utilisées sont `moveTo()` qui permet de **déplacer le crayon à des coordonnées précises** et `lineTo()` qui permet de **dessiner une ligne droite** des coordonnées actuelles aux coordonnées saisies.
+
+On a créé quelques fonctions connexes à la fonction principale d'affichage, à commencer par la fonction `minmax()` qui va **trouver la valeur minimale et maximale du tableau entré**, que l'on va utiliser pour trouver **l'intervalle d'ordonnées** du tableau saisi. On a aussi les fonction `fx()` et `fy()` qui **convertissent les coordonnées d'un point** de la fonction **en une position en pixels** dans le Canva.
+
+On commence donc par afficher la courbe de la fonction en parcourant simplement le tableau de données et en **reliant à chaque fois le point actuel au suivant par une ligne droite** en vérifiant au préalable que l'ordonnée ne vaut pas `null` *(équivalent au* `None` *en Python)*, car cela signifie que la **fonction n'est pas définie** en ce point. Dans ce cas-là, **on se déplace au point suivant sans dessiner**. On précise que dans le cas particulier où la fonction est constante, on ne s'embête pas à faire tous les calculs et on affiche simplement un axe horizontal au centre du canva.
+
+Ensuite, pour avoir un affichage plus "*utilisable*", on veut afficher un **quadrillage qui va évoluer selon la taille d'affichage** ainsi que des valeurs correspondant aux abscisses ou aux ordonnées des axes de ce même quadrillage. Pour comprendre ce que l'on entend par "*évoluer selon la taille d'affichage*", prenons un exemple : si l'on veut afficher une fonction de $x = 0$ à $x = 10$, on pourrait juste afficher 9 axes verticaux de quadrillage avec 1 d'écart en abscisse. Sauf que cela n'est possible que pour ces valeurs. En effet, prenons de $x = 0$ à $x = 100$, on ne va pas afficher un axe vertical "tous les 1" en abscisse, cela serait illisible. On a donc décidé de modifier l'intervalle entre 2 axes tous les $10^n$ afin d'avoir toujours au maximum 10 axes affichés. Une fois les calculs faits afin de déterminer la puissance de 10 utilisée pour l'affichage grâce à la fonction secondaire `trouver_puissance()`, on va **chercher la position du premier axe du quadrillage**, que ce soit en abscisse ou ordonnée, grâce aux fonctions `trouver_premierx()` et `trouver_premiery()`. Une fois ceci fait, on incrémente simplement pour afficher tous les axes et les valeurs correspondantes à côté de ceux-ci.
+
+Enfin, pour avoir un affichage complet, on veut s'occuper du cas des **axes d'origine**. Pour ce faire, on vérifie tout d'abord si l'on doit les afficher ou non selon notre "position" dans le graphe. Puis, **on cherche la position de(s) axe(s) et on les trace** en dessinant une petite flèche au bout et en précisant quel est l'axe des abscisses ($x$) et quel est l'axe des ordonnées ($y$).
+
+Tout cela, en **choisissant des couleurs et des épaisseurs de tracé différentes** pour chaque partie.
 
 
 ### Page Web (Frontend)
